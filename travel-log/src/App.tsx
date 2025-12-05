@@ -4,7 +4,7 @@ import { createClient } from "@supabase/supabase-js";
 const supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY);
 
 function App() {
-  const [users, setUser] = useState<{ name: string }[]>([]);
+  const [users, setUser] = useState<{ email: string, id: number, username:string }[]>([]);
 
   async function getUsers() {
     const { data } = await supabase.from("users").select();
@@ -20,8 +20,8 @@ function App() {
 
   return (
     <ul>
-      {users.map((instrument) => (
-        <li key={instrument.name}>{instrument.name}</li>
+      {users.map((user) => (
+        <li key={user.username}>{user.username} - {user.id} - {user.email}</li>
       ))}
     </ul>
   );
