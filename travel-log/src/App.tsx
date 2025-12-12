@@ -1,11 +1,10 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-
 import HomePage from "./pages/home-page/HomePage";
 import PrivateRoute from "./components/private-route/PrivateRoute";
-
 import ListVoyagePage from "./pages/voyages/list-voyages/ListVoyages";
 import FormVoyagePage from "./pages/voyages/form-voyages/FormVoyages";
 import Auth from "./components/auth/Auth";
+import InfoVoyagePage from "./pages/voyages/info-voyages/InfoVoyages";
 
 
 function App() {
@@ -30,6 +29,15 @@ function App() {
           element={
             <PrivateRoute>
               <FormVoyagePage />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/voyages/:id"
+          element={
+            <PrivateRoute>
+              <InfoVoyagePage />
             </PrivateRoute>
           }
         />
