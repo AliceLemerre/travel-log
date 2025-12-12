@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { createClient } from "@supabase/supabase-js";
+import { Link } from "react-router-dom";
 
 const supabase = createClient(
   import.meta.env.VITE_SUPABASE_URL,
@@ -69,8 +70,10 @@ function Navbar({ isOpen, onToggle }: NavbarProps) {
             </>
           ) : (
             <>
-              <button className="nav-link">Connexion</button>
-              <button className="nav-link">Inscription</button>
+            <Link to="/login">
+              <button className="nav-link" >Connexion</button>
+            </Link>
+            <button className="nav-link">Inscription</button>
             </>
           )}
         </div>

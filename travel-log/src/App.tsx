@@ -5,14 +5,16 @@ import PrivateRoute from "./components/private-route/PrivateRoute";
 
 import ListVoyagePage from "./pages/voyages/list-voyages/ListVoyages";
 import FormVoyagePage from "./pages/voyages/form-voyages/FormVoyages";
-// import ProfilePage from "./pages/profile/ProfilePage";
-// import NotFoundPage from "./pages/not-found/NotFoundPage";
+import Auth from "./components/auth/Auth";
+
 
 function App() {
   return (
+    
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<Auth />} />
 
         <Route
           path="/voyages"
@@ -41,18 +43,9 @@ function App() {
           }
         />
 
-        {/* <Route
-          path="/profile"
-          element={
-            <PrivateRoute>
-              <ProfilePage />
-            </PrivateRoute>
-          }
-        /> */}
-
         {/* <Route path="/404" element={<NotFoundPage />} /> */}
-
-        {/* <Route path="*" element={<Navigate to="/404" replace />} /> */}
+        
+        <Route path="*" element={<Navigate to="/404" replace />} />
       </Routes>
     </BrowserRouter>
   );
