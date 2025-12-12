@@ -10,14 +10,16 @@ import HomePage from "./pages/home-page/HomePage";
 // import ProfilePage from "./pages/ProfilePage";
 // import NotFoundPage from "./pages/NotFoundPage";
 // import PrivateRoute from "./components/private-route/PrivateRoute";
+import Auth from "./components/auth/Auth";
 
 function App() {
   return (
+    
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        {/* <Route path="/login" element={<LoginPage />} />
-        <Route path="/signup" element={<SignupPage />} />
+        <Route path="/login" element={<Auth />} />
+        {/* <Route path="/signup" element={<SignupPage />} />
         <Route path="/404" element={<NotFoundPage />} />
         
         <Route path="/voyages" element={
@@ -53,12 +55,15 @@ function App() {
         <Route path="/profile" element={
           <PrivateRoute>
             <ProfilePage />
-          </PrivateRoute>
-        } /> */}
+          </PrivateRoute> */}
+        {/* } /> */}
         
         <Route path="*" element={<Navigate to="/404" replace />} />
       </Routes>
     </BrowserRouter>
+
+
+  
   );
 }
 
