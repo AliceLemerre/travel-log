@@ -6,7 +6,8 @@ import FormVoyagePage from "./pages/voyages/form-voyages/FormVoyages";
 import Auth from "./components/auth/Auth";
 import InfoVoyagePage from "./pages/voyages/info-voyages/InfoVoyages";
 import EtapeFormPage from "./pages/etapes/form-etapes/EtapeFormPage";
-
+import LoginPage from "./components/auth/LoginPage";
+import SignupPage from "./components/auth/SignupPage";
 
 function App() {
   return (
@@ -14,7 +15,9 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<Auth />} />
+        
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
 
         <Route
           path="/voyages"
