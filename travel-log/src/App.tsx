@@ -5,6 +5,7 @@ import ListVoyagePage from "./pages/voyages/list-voyages/ListVoyages";
 import FormVoyagePage from "./pages/voyages/form-voyages/FormVoyages";
 import Auth from "./components/auth/Auth";
 import InfoVoyagePage from "./pages/voyages/info-voyages/InfoVoyages";
+import EtapeFormPage from "./pages/etapes/form-etapes/EtapeFormPage";
 
 
 function App() {
@@ -18,36 +19,63 @@ function App() {
         <Route
           path="/voyages"
           element={
-            <PrivateRoute>
+            // <PrivateRoute>
               <ListVoyagePage />
-            </PrivateRoute>
+            // </PrivateRoute>
           }
         />
 
         <Route
           path="/voyages/new"
           element={
-            <PrivateRoute>
+            // <PrivateRoute>
               <FormVoyagePage />
-            </PrivateRoute>
+            // </PrivateRoute>
           }
         />
 
         <Route
           path="/voyages/:id"
           element={
-            <PrivateRoute>
+            // <PrivateRoute>
               <InfoVoyagePage />
-            </PrivateRoute>
+            // </PrivateRoute>
           }
         />
 
         <Route
           path="/voyages/:id/edit"
           element={
-            <PrivateRoute>
+            // <PrivateRoute>
               <FormVoyagePage />
-            </PrivateRoute>
+            // </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/voyages/:voyageId/etapes/new"
+          element={
+            // <PrivateRoute>
+              <EtapeFormPage />
+            // </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/voyages/:voyageId/etapes/:etapeId"
+          element={
+            // <PrivateRoute>
+              <EtapeFormPage />
+            // </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/voyages/:voyageId/etapes/:etapeId/edit"
+          element={
+            // <PrivateRoute>
+              <EtapeFormPage />
+            // </PrivateRoute>
           }
         />
 

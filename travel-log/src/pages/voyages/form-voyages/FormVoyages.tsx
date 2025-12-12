@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { supabase } from "../../../lib/supabaseClient"; 
+import { supabase } from "../../../lib/supabaseClient";
 import Header from "../../../components/header/Header";
 import Footer from "../../../components/footer/Footer";
 
@@ -15,10 +15,19 @@ interface Voyage {
   depenses: number | null;
 }
 
-function FormVoyagePage() {
-  const { id } = useParams(); 
-  const navigate = useNavigate();
+interface Etape {
+  id: number;
+  label: string;
+  adresse: string | null;
+  pays: string | null;
+  region: string | null;
+  notes: string | null;
+  depenses: number | null;
+}
 
+function FormVoyagePage() {
+  const { id } = useParams();
+  const navigate = useNavigate();
   const mode = id ? "update" : "add";
 
   const [form, setForm] = useState<Voyage>({
@@ -32,6 +41,17 @@ function FormVoyagePage() {
     depenses: null,
   });
 
+  const [etapes, setEtapes] = useState<Etape[]>([]);
+
+  async function loadEtapes() {
+    const { data } = await supabase
+      .from("Etapes")
+      .select("*")
+      .eq("voyage_id", id);
+
+    setEtapes(data || []);
+  }
+
   useEffect(() => {
     if (!id) return;
 
@@ -42,9 +62,7 @@ function FormVoyagePage() {
         .eq("id", id)
         .single();
 
-      if (error) {
-        console.error("Erreur chargement du voyage :", error);
-      } else if (data) {
+      if (data) {
         setForm({
           label: data.label,
           regions: data.regions,
@@ -58,7 +76,12 @@ function FormVoyagePage() {
       }
     }
 
+    async function loadEtape() {
+      await loadEtapes
+    }
+
     loadVoyage();
+    loadEtape();
   }, [id]);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -79,15 +102,17 @@ function FormVoyagePage() {
     }
 
     if (mode === "add") {
-      const { error } = await supabase.from("Voyages").insert({
-        ...form,
-        user_id: user.id,
-      });
+      const { data, error } = await supabase
+        .from("Voyages")
+        .insert({
+          ...form,
+          user_id: user.id,
+        })
+        .select()
+        .single();
 
-      if (error) {
-        console.error("Erreur création :", error);
-      } else {
-        navigate("/voyages");
+      if (!error && data) {
+        navigate(`/voyages/${data.id}/edit`);
       }
     }
 
@@ -97,11 +122,23 @@ function FormVoyagePage() {
         .update(form)
         .eq("id", id);
 
-      if (error) {
-        console.error("Erreur update :", error);
-      } else {
-        navigate("/voyages");
+      if (!error) {
+        navigate(`/voyages/${id}/edit`);
       }
+    }
+  }
+
+  async function deleteEtape(etapeId: number) {
+    const confirmDelete = window.confirm("Supprimer cette étape ?");
+    if (!confirmDelete) return;
+
+    const { error } = await supabase
+      .from("Etapes")
+      .delete()
+      .eq("id", etapeId);
+
+    if (!error) {
+      loadEtapes();
     }
   }
 
@@ -111,14 +148,11 @@ function FormVoyagePage() {
 
       <main>
         <div className="content">
-          <h1>
-            {mode === "add" ? "Créer un voyage" : "Modifier un voyage"}
-          </h1>
+          <h1>{mode === "add" ? "Créer un voyage" : "Modifier un voyage"}</h1>
 
           <form onSubmit={handleSubmit}>
-
             <label>
-              Nom du voyage  
+              Nom du voyage
               <input
                 type="text"
                 name="label"
@@ -162,6 +196,46 @@ function FormVoyagePage() {
               {mode === "add" ? "Créer" : "Mettre à jour"}
             </button>
           </form>
+
+          {id && (
+            <>
+              <h2>Étapes</h2>
+
+              <button onClick={() => navigate(`/voyages/${id}/etapes/new`)}>
+                Ajouter une étape
+              </button>
+
+              <ul>
+                {etapes.map((etape) => (
+                  <li key={etape.id}>
+                    <strong>{etape.label}</strong>
+                    <br />
+                    <button
+                      onClick={() =>
+                        navigate(
+                          `/voyages/${id}/etapes/${etape.id}`
+                        )
+                      }
+                    >
+                      Détails
+                    </button>
+                    <button
+                      onClick={() =>
+                        navigate(
+                          `/voyages/${id}/etapes/${etape.id}/edit`
+                        )
+                      }
+                    >
+                      Modifier
+                    </button>
+                    <button onClick={() => deleteEtape(etape.id)}>
+                      Supprimer
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
         </div>
       </main>
 
