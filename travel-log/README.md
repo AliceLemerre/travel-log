@@ -9,8 +9,8 @@ Notre application est un carnet de voyage .......
 - [ ] CRUD [voyages]
 - [ ] CRUD [étapes]
 - [ ] CRU [user]
-- [ ] Recherche et filtres
-- [ ] ...
+- [ ] Recherche par label, par région, par pays, par ville, par fourchette de dates
+- [ ] Filtres asc/desc
 
 ## Stack technique
 - React 18
@@ -32,6 +32,7 @@ npm run dev
 
 ## Structure du projet
 [Arborescence expliquée]
+tree /F /A | clip      à faire
 
 ## Auteur(s)
 Alice Lemerre

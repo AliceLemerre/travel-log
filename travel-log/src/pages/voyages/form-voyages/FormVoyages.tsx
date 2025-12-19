@@ -42,13 +42,21 @@ function FormVoyagePage() {
   });
 
   const [etapes, setEtapes] = useState<Etape[]>([]);
+  const [searchEtape, setSearchEtape] = useState("");
 
-  async function loadEtapes() {
-    const { data } = await supabase
+  async function loadEtapes(search = "") {
+    if (!id) return;
+
+    let query = supabase
       .from("Etapes")
       .select("*")
-      .eq("voyage_id", id);
+      .eq("voyage_id", Number(id));
 
+    if (search) {
+      query = query.ilike("label", `%${search}%`);
+    }
+
+    const { data } = await query;
     setEtapes(data || []);
   }
 
@@ -59,7 +67,7 @@ function FormVoyagePage() {
       const { data } = await supabase
         .from("Voyages")
         .select("*")
-        .eq("id", id)
+        .eq("id", Number(id))
         .single();
 
       if (data) {
@@ -75,20 +83,27 @@ function FormVoyagePage() {
         });
       }
 
-      const { data: etapesData } = await supabase
-        .from("Etapes")
-        .select("*")
-        .eq("voyage_id", Number(id));
-
-      setEtapes(etapesData || []);
+      await loadEtapes();
     }
 
     loadAll();
   }, [id]);
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+  useEffect(() => {
+    loadEtapes(searchEtape);
+  }, [searchEtape]);
+
+  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const { name, value } = e.target;
-    setForm((f) => ({ ...f, [name]: value }));
+
+    if (["regions", "pays", "villes"].includes(name)) {
+      const arr = value.split(",").map((s) => s.trim());
+      setForm((f) => ({ ...f, [name]: arr }));
+    } else if (["budget", "depenses"].includes(name)) {
+      setForm((f) => ({ ...f, [name]: value ? Number(value) : null }));
+    } else {
+      setForm((f) => ({ ...f, [name]: value }));
+    }
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -98,35 +113,22 @@ function FormVoyagePage() {
       data: { user },
     } = await supabase.auth.getUser();
 
-    if (!user) {
-      alert("Vous devez être connecté.");
-      return;
-    }
+    if (!user) return;
 
     if (mode === "add") {
-      const { data, error } = await supabase
-        .from("Voyages")
-        .insert({
-          ...form,
-          user_id: user.id,
-        })
-        .select()
-        .single();
+      const { error } = await supabase.from("Voyages").insert({
+        ...form,
+        user_id: user.id,
+      });
 
-      if (!error && data) {
-        navigate(`/voyages/${data.id}/edit`);
-      }
-    }
-
-    if (mode === "update") {
+      if (!error) navigate("/voyages");
+    } else {
       const { error } = await supabase
         .from("Voyages")
         .update(form)
-        .eq("id", id);
+        .eq("id", Number(id));
 
-      if (!error) {
-        navigate(`/voyages/${id}/edit`);
-      }
+      if (!error) navigate(`/voyages/${id}/edit`);
     }
   }
 
@@ -134,20 +136,13 @@ function FormVoyagePage() {
     const confirmDelete = window.confirm("Supprimer cette étape ?");
     if (!confirmDelete) return;
 
-    const { error } = await supabase
-      .from("Etapes")
-      .delete()
-      .eq("id", etapeId);
-
-    if (!error) {
-      loadEtapes();
-    }
+    const { error } = await supabase.from("Etapes").delete().eq("id", etapeId);
+    if (!error) loadEtapes(searchEtape);
   }
 
   return (
     <div className="form-voyages-page">
       <Header />
-
       <main>
         <div className="content">
           <h1>{mode === "add" ? "Créer un voyage" : "Modifier un voyage"}</h1>
@@ -155,53 +150,57 @@ function FormVoyagePage() {
           <form onSubmit={handleSubmit}>
             <label>
               Nom du voyage
-              <input
-                type="text"
-                name="label"
-                value={form.label}
-                onChange={handleChange}
-                required
-              />
+              <input type="text" name="label" value={form.label} onChange={handleChange} required />
+            </label>
+
+            <label>
+              Régions
+              <input type="text" name="regions" value={form.regions?.join(", ") || ""} onChange={handleChange} />
+            </label>
+
+            <label>
+              Pays
+              <input type="text" name="pays" value={form.pays?.join(", ") || ""} onChange={handleChange} />
+            </label>
+
+            <label>
+              Villes
+              <input type="text" name="villes" value={form.villes?.join(", ") || ""} onChange={handleChange} />
             </label>
 
             <label>
               Date de départ
-              <input
-                type="date"
-                name="date_depart"
-                value={form.date_depart || ""}
-                onChange={handleChange}
-              />
+              <input type="date" name="date_depart" value={form.date_depart || ""} onChange={handleChange} />
             </label>
 
             <label>
               Date d'arrivée
-              <input
-                type="date"
-                name="date_arrivee"
-                value={form.date_arrivee || ""}
-                onChange={handleChange}
-              />
+              <input type="date" name="date_arrivee" value={form.date_arrivee || ""} onChange={handleChange} />
             </label>
 
             <label>
-              Budget (€)
-              <input
-                type="number"
-                name="budget"
-                value={form.budget ?? ""}
-                onChange={handleChange}
-              />
+              Budget
+              <input type="number" name="budget" value={form.budget ?? ""} onChange={handleChange} />
             </label>
 
-            <button type="submit">
-              {mode === "add" ? "Créer" : "Mettre à jour"}
-            </button>
+            <label>
+              Dépenses
+              <input type="number" name="depenses" value={form.depenses ?? ""} onChange={handleChange} />
+            </label>
+
+            <button type="submit">{mode === "add" ? "Créer" : "Mettre à jour"}</button>
           </form>
 
           {id && (
             <>
               <h2>Étapes</h2>
+
+              <input
+                type="text"
+                placeholder="Rechercher une étape"
+                value={searchEtape}
+                onChange={(e) => setSearchEtape(e.target.value)}
+              />
 
               <button onClick={() => navigate(`/voyages/${id}/etapes/new`)}>
                 Ajouter une étape
@@ -212,27 +211,13 @@ function FormVoyagePage() {
                   <li key={etape.id}>
                     <strong>{etape.label}</strong>
                     <br />
-                    <button
-                      onClick={() =>
-                        navigate(
-                          `/voyages/${id}/etapes/${etape.id}`
-                        )
-                      }
-                    >
+                    <button onClick={() => navigate(`/voyages/${id}/etapes/${etape.id}`)}>
                       Détails
                     </button>
-                    <button
-                      onClick={() =>
-                        navigate(
-                          `/voyages/${id}/etapes/${etape.id}/edit`
-                        )
-                      }
-                    >
+                    <button onClick={() => navigate(`/voyages/${id}/etapes/${etape.id}/edit`)}>
                       Modifier
                     </button>
-                    <button onClick={() => deleteEtape(etape.id)}>
-                      Supprimer
-                    </button>
+                    <button onClick={() => deleteEtape(etape.id)}>Supprimer</button>
                   </li>
                 ))}
               </ul>
@@ -240,7 +225,6 @@ function FormVoyagePage() {
           )}
         </div>
       </main>
-
       <Footer />
     </div>
   );
