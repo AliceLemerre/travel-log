@@ -75,8 +75,8 @@ function ListVoyagePage() {
     <div className="list-voyages-page">
       <Header />
       <main>
-        <div className="content">
-          <h1>Mes voyages</h1>
+        <div className="content card card-travel">
+          <h2>Mes voyages</h2>
 
           <button onClick={() => navigate("/voyages/new")}>
             Nouveau voyage
@@ -88,31 +88,36 @@ function ListVoyagePage() {
             <p>Aucun voyage enregistré.</p>
           )}
 
-          <ul>
+          <ul className="card card-travels">
             {voyages.map((voyage) => (
-              <li key={voyage.id}>
+              <li key={voyage.id} className="card-travel card-list">
                 <strong>{voyage.label}</strong>
                 <br />
                 {voyage.date_depart} → {voyage.date_arrivee}
                 <br /><br />
 
-                <button
-                  onClick={() => navigate(`/voyages/${voyage.id}`)}
-                >
-                  Détails
-                </button>
+                <footer className="card-footer">
 
-                <button
-                  onClick={() => navigate(`/voyages/${voyage.id}/edit`)}
-                >
-                  Modifier
-                </button>
+                  <button
+                    onClick={() => navigate(`/voyages/${voyage.id}`)}
+                  >
+                    Détails
+                  </button>
 
-                <button
-                  onClick={() => deleteVoyage(voyage.id)}
-                >
-                  Supprimer
-                </button>
+                  <button 
+                    className="cta"
+                    onClick={() => navigate(`/voyages/${voyage.id}/edit`)}
+                  >
+                    Modifier
+                  </button>
+
+                  <button
+                    className="cta"
+                    onClick={() => deleteVoyage(voyage.id)}
+                  >
+                    Supprimer
+                  </button>
+                </footer>
               </li>
             ))}
           </ul>

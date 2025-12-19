@@ -5,6 +5,7 @@ import ListVoyagePage from "./pages/voyages/list-voyages/ListVoyages";
 import FormVoyagePage from "./pages/voyages/form-voyages/FormVoyages";
 import Auth from "./components/auth/Auth";
 import InfoVoyagePage from "./pages/voyages/info-voyages/InfoVoyages";
+import "./App.css";
 
 
 function App() {

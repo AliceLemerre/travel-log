@@ -5,6 +5,57 @@
   text-align: center;
 }
 
+@font-face {
+  font-family: 'Apfel Grotesk';
+  src: url('././assets/fonts/ApfelGrotezk-Regular.woff');
+}
+
+@font-face {
+  font-family: 'Apfel Grotesk Black';
+  src: url('././assets/fonts/ApfelGrotezk-Black.woff');
+}
+
+@font-face {
+  font-family: 'Apfel Grotesk Medium';
+  src: url('././assets/fonts/ApfelGrotezk-Mittel.woff');
+}
+
+@font-face {
+  font-family: 'Apfel Grotesk Bold';
+  src: url('././assets/fonts/ApfelGrotezk-Fett.woff');
+}
+
+:root {
+  --light-grey: #efefef;
+  --blue: #8577E6;
+  --dark-blue: #655DAA;
+  --light-blue: #e3e1ef;
+}
+
+
+* {
+  font-family: 'Apfel Grotesk';
+}
+
+html{
+  background-color: var(--light-grey);
+}
+
+.cta{
+  background-color: var(--blue);
+  color: var(--light-grey);
+}
+
+.cta-icon{
+  border-radius: 100%;
+  padding: 0.3rem 0.7rem;
+  background-color: var(--light-blue);
+  color: var(--grey);
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -34,9 +85,76 @@
 }
 
 .card {
-  padding: 2em;
+  padding: 4rem;
+  position: relative;
 }
 
-.read-the-docs {
-  color: #888;
+
+h1{
+  font-family: 'Apfel Grotesk Bold';
 }
+
+h2{
+  font-size: 2rem;
+  line-height: 1.1;
+  text-align: center;
+  margin: 0;
+  font-family: 'Apfel Grotesk Bold';
+}
+
+.card-travels{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-travel{
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 1rem;
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.card-dates{
+  text-align: center;
+  margin: 0.2 0;
+}
+
+.card-date{
+  padding: 0.3rem 0.8rem;
+  background-color: var(--light-blue);
+  border-radius: 100px;
+}
+
+.card-footer{
+  display: flex;
+  /*flex-direction: column;*/
+  gap: 1rem;
+  justify-content: center;
+}
+
+
+.card-form form{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.card-form label{
+  display: flex;
+  flex-direction: column;
+  flex: 0 1;
+}
+
+.card-form input{
+  padding: 0.3rem 0.8rem;
+  margin-top: 0.5rem;
+}
+
+.card-list{
+  list-style: none;
+}
+

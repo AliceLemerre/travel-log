@@ -49,12 +49,22 @@ function InfoVoyagePage() {
       <Header />
 
       <main>
-        <div className="content">
-          <h1>{voyage.label}</h1>
+        <div className="content card card-travel">
+          
+          <h2>{voyage.label}</h2>
 
-          <p>
-            <strong>Dates :</strong> {voyage.date_depart} → {voyage.date_arrivee}
+          <button className="cta cta-icon" onClick={() => navigate("/voyages")}>
+              ←
+            </button>
+
+          <p className="card-dates">
+             <span className="card-date">{voyage.date_depart}</span> → <span className="card-date">{voyage.date_arrivee}</span>
           </p>
+
+           <p>
+            {voyage.pays?.join(", ") || "Non renseigné"}, {voyage.villes?.join(", ") || "Non renseigné"}, {voyage.regions?.join(", ") || "Non renseigné"}
+          </p>
+
 
           <p>
             <strong>Budget :</strong> {voyage.budget ?? "Non renseigné"} €
@@ -64,27 +74,14 @@ function InfoVoyagePage() {
             <strong>Dépenses :</strong> {voyage.depenses ?? "Aucune"} €
           </p>
 
-          <p>
-            <strong>Pays :</strong> {voyage.pays?.join(", ") || "Non renseigné"}
-          </p>
+          <footer className="card-footer">
+            <button className="cta" onClick={() => navigate(`/voyages/${voyage.id}/edit`)}>
+              Modifier
+            </button>
 
-          <p>
-            <strong>Villes :</strong> {voyage.villes?.join(", ") || "Non renseigné"}
-          </p>
+            
+          </footer>
 
-          <p>
-            <strong>Régions :</strong> {voyage.regions?.join(", ") || "Non renseigné"}
-          </p>
-
-          <br />
-
-          <button onClick={() => navigate(`/voyages/${voyage.id}/edit`)}>
-            Modifier
-          </button>
-
-          <button onClick={() => navigate("/voyages")}>
-             Retour à la liste
-          </button>
         </div>
       </main>
 

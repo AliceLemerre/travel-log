@@ -110,10 +110,10 @@ function FormVoyagePage() {
       <Header />
 
       <main>
-        <div className="content">
-          <h1>
+        <div className="content card card-travel card-form">
+          <h2>
             {mode === "add" ? "Créer un voyage" : "Modifier un voyage"}
-          </h1>
+          </h2>
 
           <form onSubmit={handleSubmit}>
 
@@ -158,7 +158,7 @@ function FormVoyagePage() {
               />
             </label>
 
-            <button type="submit">
+            <button className="cta" type="submit">
               {mode === "add" ? "Créer" : "Mettre à jour"}
             </button>
           </form>
