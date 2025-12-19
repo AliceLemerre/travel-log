@@ -2,56 +2,29 @@ import { useState, useEffect } from "react";
 import { createClient } from "@supabase/supabase-js";
 import type { Session } from "@supabase/supabase-js";
 
-const supabase = createClient(import.meta.env.VITE_SUPABASE_URL, import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY);
+const supabase = createClient(
+    import.meta.env.VITE_SUPABASE_URL,
+    import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY
+);
 
 export default function Auth() {
     const [loading, setLoading] = useState(false);
     const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const [session, setSession] = useState<Session | null>(null);
-
-    // Check URL params on initial render
-    const params = new URLSearchParams(window.location.search);
-    const hasTokenHash = params.get("token_hash");
-
-    const [verifying, setVerifying] = useState(!!hasTokenHash);
-    const [authError, setAuthError] = useState<string | null>(null);
-    const [authSuccess, setAuthSuccess] = useState(false);
+    const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
     useEffect(() => {
-        // Check if we have token_hash in URL (magic link callback)
-        const params = new URLSearchParams(window.location.search);
-        const token_hash = params.get("token_hash");
-        const type = params.get("type");
-        
 
-        if (token_hash) {
-            // Verify the OTP token
-            supabase.auth.verifyOtp({
-                token_hash,
-                type: "email",
-            }).then(({ error }) => {
-                if (error) {
-                    setAuthError(error.message);
-                } else {
-                    setAuthSuccess(true);
-                    // Clear URL params
-                    window.history.replaceState({}, document.title, "/");
-                }
-                setVerifying(false);
-            });
-        }
-
-        // Check for existing session
         supabase.auth.getSession().then(({ data: { session } }) => {
             setSession(session);
         });
 
-        // Listen for auth changes
-        const {
-            data: { subscription },
-        } = supabase.auth.onAuthStateChange((_event, session) => {
-            setSession(session);
-        });
+        const { data: { subscription } } = supabase.auth.onAuthStateChange(
+            (_event, session) => {
+                setSession(session);
+            }
+        );
 
         return () => subscription.unsubscribe();
     }, []);
@@ -59,17 +32,31 @@ export default function Auth() {
     const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setLoading(true);
-        const { error } = await supabase.auth.signInWithOtp({
+        setErrorMsg(null);
+
+        const { error } = await supabase.auth.signInWithPassword({
             email,
-            options: {
-                emailRedirectTo: window.location.origin,
-            }
+            password,
         });
-        if (error) {
-            alert(error.message);
-        } else {
-            alert("Check your email for the login link!");
-        }
+
+        if (error) setErrorMsg(error.message);
+
+        setLoading(false);
+    };
+
+    const handleSignup = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        setLoading(true);
+        setErrorMsg(null);
+
+        const { error } = await supabase.auth.signUp({
+            email,
+            password,
+        });
+
+        if (error) setErrorMsg(error.message);
+        else alert("Compte créé ! Vérifie ton email");
+
         setLoading(false);
     };
 
@@ -78,75 +65,67 @@ export default function Auth() {
         setSession(null);
     };
 
-    // Show verification state
-    if (verifying) {
-        return (
-            <div>
-                <h1>Authentication</h1>
-                <p>Confirming your magic link...</p>
-                <p>Loading...</p>
-            </div>
-        );
-    }
-
-    // Show auth error
-    if (authError) {
-        return (
-            <div>
-                <h1>Authentication</h1>
-                <p>✗ Authentication failed</p>
-                <p>{authError}</p>
-                <button
-                    onClick={() => {
-                        setAuthError(null);
-                        window.history.replaceState({}, document.title, "/");
-                    }}
-                >
-                    Return to login
-                </button>
-            </div>
-        );
-    }
-
-    // Show auth success (briefly before session loads)
-    if (authSuccess && !session) {
-        return (
-            <div>
-                <h1>Authentication</h1>
-                <p>✓ Authentication successful!</p>
-                <p>Loading your account...</p>
-            </div>
-        );
-    }
-
-    // If user is logged in, show welcome screen
     if (session) {
         return (
             <div>
-                <h1>Welcome!</h1>
-                <p>You are logged in as: {session.user.email}</p>
-                <button onClick={handleLogout}>
-                    Sign Out
-                </button>
+                <h1>Bienvenue !</h1>
+                <p>Connecté en tant que : {session.user.email}</p>
+                <button onClick={handleLogout}>Se déconnecter</button>
             </div>
         );
     }
 
-    // Show login form
     return (
         <div>
-            <h1>Supabase + React</h1>
-            <p>Sign in via magic link with your email below</p>
-            <form onSubmit={handleLogin}>
+            <h1>Connexion / Inscription</h1>
+
+            {errorMsg && <p style={{ color: "red" }}>{errorMsg}</p>}
+
+            {}
+            <form onSubmit={handleLogin} style={{ marginBottom: 20 }}>
+                <h2>Connexion</h2>
                 <input
                     type="email"
-                    placeholder="Your email"
+                    placeholder="Email"
                     value={email}
-                    required={true}
+                    required
                     onChange={(e) => setEmail(e.target.value)}
                 />
+
+                <input
+                    type="password"
+                    placeholder="Mot de passe"
+                    value={password}
+                    required
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+
                 <button disabled={loading}>
-                    {loading ? <span>Loading</span> : <span>Send magic link</span>}
+                    {loading ? "Chargement..." : "Se connecter"}
+                </button>
+            </form>
+
+            {}
+            <form onSubmit={handleSignup}>
+                <h2>Créer un compte</h2>
+                <input
+                    type="email"
+                    placeholder="Email"
+                    value={email}
+                    required
+                    onChange={(e) => setEmail(e.target.value)}
+                />
+
+                <input
+                    type="password"
+                    placeholder="Mot de passe"
+                    value={password}
+                    required
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+
+                <button disabled={loading}>
+                    {loading ? "Chargement..." : "S'inscrire"}
                 </button>
             </form>
         </div>

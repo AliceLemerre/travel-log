@@ -1,68 +1,50 @@
-import { useState, useEffect } from "react";
-import { createClient } from "@supabase/supabase-js";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY
-);
+import { useAuth } from "../../context/AuthContext";
 
 interface NavbarProps {
   isOpen: boolean;
   onToggle: () => void;
 }
 
-function Navbar({ isOpen, onToggle }: NavbarProps) {
-  const [user, setUser] = useState<unknown>(null);
+export default function Navbar({ isOpen, onToggle }: NavbarProps) {
+  const { user, logout } = useAuth();
   const [showMenu, setShowMenu] = useState(false);
-
-  useEffect(() => {
-    // checkUser();
-    // const { data: authListener } = supabase.auth.onAuthStateChange(
-    //   (event, session) => {
-    //     setUser(session?.user || null);
-    //   }
-    // );
-
-    // return () => {
-    //   authListener.subscription.unsubscribe();
-    // };
-  }, []);
-
-//   const checkUser = async () => {
-//     const { data: { user } } = await supabase.auth.getUser();
-//     setUser(user);
-//   };
-
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    setUser(null);
-    setShowMenu(false);
-  };
 
   return (
     <nav className="navbar">
       <div className="navbar-container">
-        <button className="menu-toggle" onClick={onToggle}>
+        {/* <button className="menu-toggle" onClick={onToggle}>
           Menu
-        </button>
-        
+        </button> */}
+
         <div className={`nav-links ${isOpen ? "open" : ""}`}>
+          {user && (
+            <>
+              <Link to="/voyages">
+                <button className="nav-link">Mes voyages</button>
+              </Link>
+
+              <Link to="/voyages/new">
+                <button className="nav-link">Nouveau voyage</button>
+              </Link>
+            </>
+          )}
+
           {user ? (
             <>
-              <button className="nav-link" onClick={() => setShowMenu(!showMenu)}>
+              <button
+                className="nav-link"
+                onClick={() => setShowMenu(!showMenu)}
+              >
                 Mon Compte
               </button>
-              
+
               {showMenu && (
                 <div className="account-menu">
-                  <button className="menu-item" onClick={() => {}}>
-                    Liste des Tags
-                  </button>
-                  <button className="menu-item" onClick={() => {}}>
-                    Mon Profil
-                  </button>
-                  <button className="menu-item logout" onClick={handleLogout}>
+                  <button className="menu-item">Liste des Tags</button>
+                  <button className="menu-item">Mon Profil</button>
+                  <button className="menu-item logout" onClick={logout}>
                     Déconnexion
                   </button>
                 </div>
@@ -70,10 +52,13 @@ function Navbar({ isOpen, onToggle }: NavbarProps) {
             </>
           ) : (
             <>
-            <Link to="/login">
-              <button className="nav-link" >Connexion</button>
-            </Link>
-            <button className="nav-link">Inscription</button>
+              <Link to="/login">
+                <button className="nav-link">Connexion</button>
+              </Link>
+
+              <Link to="/signup">
+                <button className="nav-link">Inscription</button>
+              </Link>
             </>
           )}
         </div>
@@ -81,5 +66,3 @@ function Navbar({ isOpen, onToggle }: NavbarProps) {
     </nav>
   );
 }
-
-export default Navbar;

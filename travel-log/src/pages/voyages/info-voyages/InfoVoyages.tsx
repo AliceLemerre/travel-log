@@ -16,32 +16,47 @@ interface Voyage {
   depenses: number | null;
 }
 
+interface Etape {
+  id: number;
+  label: string;
+  adresse: string | null;
+  pays: string | null;
+  region: string | null;
+  notes: string | null;
+  depenses: number | null;
+}
+
 function InfoVoyagePage() {
   const { id } = useParams();
   const navigate = useNavigate();
 
   const [voyage, setVoyage] = useState<Voyage | null>(null);
+  const [etapes, setEtapes] = useState<Etape[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function loadVoyage() {
-      const { data, error } = await supabase
+    async function loadData() {
+      const { data: voyageData } = await supabase
         .from("Voyages")
         .select("*")
         .eq("id", id)
         .single();
 
-      if (error) console.error("Erreur chargement :", error);
-      else setVoyage(data);
+      const { data: etapesData } = await supabase
+        .from("Etapes")
+        .select("*")
+        .eq("voyage_id", id)
+        .order("id", { ascending: true });
 
+      setVoyage(voyageData);
+      setEtapes(etapesData || []);
       setLoading(false);
     }
 
-    loadVoyage();
+    loadData();
   }, [id]);
 
   if (loading) return <p>Chargement...</p>;
-
   if (!voyage) return <p>Voyage introuvable.</p>;
 
   return (
@@ -82,6 +97,51 @@ function InfoVoyagePage() {
             
           </footer>
 
+          <p>
+            <strong>Régions :</strong> {voyage.regions?.join(", ") || "Non renseigné"}
+          </p>
+
+          <hr />
+
+          <h2>Étapes</h2>
+
+          {etapes.length === 0 && <p>Aucune étape enregistrée.</p>}
+
+          <ul>
+            {etapes.map((etape) => (
+              <li key={etape.id}>
+                <strong>{etape.label}</strong>
+                {etape.pays && <span> – {etape.pays}</span>}
+                <br />
+
+                <button
+                  onClick={() =>
+                    navigate(`/voyages/${voyage.id}/etapes/${etape.id}`)
+                  }
+                >
+                  Voir
+                </button>
+
+                <button
+                  onClick={() =>
+                    navigate(`/voyages/${voyage.id}/etapes/${etape.id}/edit`)
+                  }
+                >
+                  Modifier
+                </button>
+              </li>
+            ))}
+          </ul>
+
+          <br />
+
+          <button onClick={() => navigate(`/voyages/${voyage.id}/edit`)}>
+            Modifier le voyage
+          </button>
+
+          <button onClick={() => navigate("/voyages")}>
+            Retour à la liste
+          </button>
         </div>
       </main>
 
