@@ -55,8 +55,8 @@ function FormVoyagePage() {
   useEffect(() => {
     if (!id) return;
 
-    async function loadVoyage() {
-      const { data, error } = await supabase
+    async function loadAll() {
+      const { data } = await supabase
         .from("Voyages")
         .select("*")
         .eq("id", id)
@@ -74,14 +74,16 @@ function FormVoyagePage() {
           depenses: data.depenses,
         });
       }
+
+      const { data: etapesData } = await supabase
+        .from("Etapes")
+        .select("*")
+        .eq("voyage_id", Number(id));
+
+      setEtapes(etapesData || []);
     }
 
-    async function loadEtape() {
-      await loadEtapes
-    }
-
-    loadVoyage();
-    loadEtape();
+    loadAll();
   }, [id]);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {

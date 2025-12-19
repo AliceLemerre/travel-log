@@ -99,6 +99,10 @@ function EtapeFormPage() {
         <div className="content">
           <h1>{mode === "add" ? "Ajouter une étape" : "Modifier une étape"}</h1>
 
+          <button onClick={() => navigate(`/voyages/${voyageId}/edit`)}>
+            Retour au voyage
+          </button>
+
           <form onSubmit={handleSubmit}>
             <label>
               Nom de l'étape

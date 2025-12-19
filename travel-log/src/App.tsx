@@ -8,6 +8,7 @@ import InfoVoyagePage from "./pages/voyages/info-voyages/InfoVoyages";
 import EtapeFormPage from "./pages/etapes/form-etapes/EtapeFormPage";
 import LoginPage from "./components/auth/LoginPage";
 import SignupPage from "./components/auth/SignupPage";
+import InfoEtapesPage from "./pages/etapes/info-etapes/InfoEtapes";
 
 function App() {
   return (
@@ -22,63 +23,63 @@ function App() {
         <Route
           path="/voyages"
           element={
-            // <PrivateRoute>
+            <PrivateRoute>
               <ListVoyagePage />
-            // </PrivateRoute>
+            </PrivateRoute>
           }
         />
 
         <Route
           path="/voyages/new"
           element={
-            // <PrivateRoute>
+            <PrivateRoute>
               <FormVoyagePage />
-            // </PrivateRoute>
+            </PrivateRoute>
           }
         />
 
         <Route
           path="/voyages/:id"
           element={
-            // <PrivateRoute>
+            <PrivateRoute>
               <InfoVoyagePage />
-            // </PrivateRoute>
+            </PrivateRoute>
           }
         />
 
         <Route
           path="/voyages/:id/edit"
           element={
-            // <PrivateRoute>
+            <PrivateRoute>
               <FormVoyagePage />
-            // </PrivateRoute>
+            </PrivateRoute>
           }
         />
 
         <Route
           path="/voyages/:voyageId/etapes/new"
           element={
-            // <PrivateRoute>
+            <PrivateRoute>
               <EtapeFormPage />
-            // </PrivateRoute>
+            </PrivateRoute>
           }
         />
 
         <Route
           path="/voyages/:voyageId/etapes/:etapeId"
           element={
-            // <PrivateRoute>
-              <EtapeFormPage />
-            // </PrivateRoute>
+            <PrivateRoute>
+              <InfoEtapesPage />
+            </PrivateRoute>
           }
         />
 
         <Route
           path="/voyages/:voyageId/etapes/:etapeId/edit"
           element={
-            // <PrivateRoute>
+            <PrivateRoute>
               <EtapeFormPage />
-            // </PrivateRoute>
+            </PrivateRoute>
           }
         />
 

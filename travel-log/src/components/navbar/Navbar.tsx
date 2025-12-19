@@ -14,11 +14,23 @@ export default function Navbar({ isOpen, onToggle }: NavbarProps) {
   return (
     <nav className="navbar">
       <div className="navbar-container">
-        <button className="menu-toggle" onClick={onToggle}>
+        {/* <button className="menu-toggle" onClick={onToggle}>
           Menu
-        </button>
+        </button> */}
 
         <div className={`nav-links ${isOpen ? "open" : ""}`}>
+          {user && (
+            <>
+              <Link to="/voyages">
+                <button className="nav-link">Mes voyages</button>
+              </Link>
+
+              <Link to="/voyages/new">
+                <button className="nav-link">Nouveau voyage</button>
+              </Link>
+            </>
+          )}
+
           {user ? (
             <>
               <button
