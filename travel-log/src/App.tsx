@@ -10,6 +10,7 @@ import EtapeFormPage from "./pages/etapes/form-etapes/EtapeFormPage";
 import LoginPage from "./components/auth/LoginPage";
 import SignupPage from "./components/auth/SignupPage";
 import InfoEtapesPage from "./pages/etapes/info-etapes/InfoEtapes";
+import Page404 from "./pages/404/Page404";
 
 function App() {
   return (
@@ -84,7 +85,7 @@ function App() {
           }
         />
 
-        {/* <Route path="/404" element={<NotFoundPage />} /> */}
+        <Route path="/404" element={<Page404 />} />
         
         <Route path="*" element={<Navigate to="/404" replace />} />
       </Routes>

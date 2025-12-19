@@ -92,15 +92,15 @@ function EtapeFormPage() {
   }
 
   return (
-    <div className="etape-form-page">
+    <div className="etape-form-page form-voyages-page">
       <Header />
 
       <main>
-        <div className="content">
+        <div className="content card card-travel card-form">
           <h1>{mode === "add" ? "Ajouter une étape" : "Modifier une étape"}</h1>
 
-          <button onClick={() => navigate(`/voyages/${voyageId}/edit`)}>
-            Retour au voyage
+          <button className="cta cta-icon" onClick={() => navigate(`/voyages/${voyageId}/edit`)}>
+            ←
           </button>
 
           <form onSubmit={handleSubmit}>
@@ -164,7 +164,7 @@ function EtapeFormPage() {
               />
             </label>
 
-            <button type="submit">
+            <button className="cta" type="submit">
               {mode === "add" ? "Créer" : "Mettre à jour"}
             </button>
           </form>

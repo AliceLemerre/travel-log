@@ -78,7 +78,7 @@ function ListVoyagePage() {
         <div className="content card card-travel">
           <h2>Mes voyages</h2>
 
-          <button onClick={() => navigate("/voyages/new")}>
+          <button className="cta" onClick={() => navigate("/voyages/new")}>
             Nouveau voyage
           </button>
 
@@ -88,7 +88,7 @@ function ListVoyagePage() {
             <p>Aucun voyage enregistré.</p>
           )}
 
-          <ul className="card card-travels">
+          <ul className="content card card-travels">
             {voyages.map((voyage) => (
               <li key={voyage.id} className="card-travel card-list">
                 <strong>{voyage.label}</strong>
@@ -99,6 +99,7 @@ function ListVoyagePage() {
                 <footer className="card-footer">
 
                   <button
+                    className="cta"
                     onClick={() => navigate(`/voyages/${voyage.id}`)}
                   >
                     Détails

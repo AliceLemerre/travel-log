@@ -153,8 +153,6 @@ function FormVoyagePage() {
           <h2>
             {mode === "add" ? "Créer un voyage" : "Modifier un voyage"}
           </h2>
-        <div className="content">
-          <h1>{mode === "add" ? "Créer un voyage" : "Modifier un voyage"}</h1>
 
           <form onSubmit={handleSubmit}>
             <label>
@@ -207,7 +205,7 @@ function FormVoyagePage() {
             <>
               <h2>Étapes</h2>
 
-              <button onClick={() => navigate(`/voyages/${id}/etapes/new`)}>
+              <button className="cta" onClick={() => navigate(`/voyages/${id}/etapes/new`)}>
                 Ajouter une étape
               </button>
 
@@ -226,6 +224,7 @@ function FormVoyagePage() {
                       Détails
                     </button>
                     <button
+                      className="cta"
                       onClick={() =>
                         navigate(
                           `/voyages/${id}/etapes/${etape.id}/edit`
@@ -234,7 +233,7 @@ function FormVoyagePage() {
                     >
                       Modifier
                     </button>
-                    <button onClick={() => deleteEtape(etape.id)}>
+                    <button className="cta" onClick={() => deleteEtape(etape.id)}>
                       Supprimer
                     </button>
                   </li>

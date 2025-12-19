@@ -65,12 +65,18 @@ function InfoVoyagePage() {
 
       <main>
         <div className="content card card-travel">
+
+          <header className="card-header">
+            <button className="cta cta-icon" onClick={() => navigate("/voyages")}>
+                ←
+            </button>
+
+            <button className="cta card-header-cta" onClick={() => navigate(`/voyages/${voyage.id}/edit`)}>
+              Modifier
+            </button>
+          </header>
           
           <h2>{voyage.label}</h2>
-
-          <button className="cta cta-icon" onClick={() => navigate("/voyages")}>
-              ←
-            </button>
 
           <p className="card-dates">
              <span className="card-date">{voyage.date_depart}</span> → <span className="card-date">{voyage.date_arrivee}</span>
@@ -89,19 +95,7 @@ function InfoVoyagePage() {
             <strong>Dépenses :</strong> {voyage.depenses ?? "Aucune"} €
           </p>
 
-          <footer className="card-footer">
-            <button className="cta" onClick={() => navigate(`/voyages/${voyage.id}/edit`)}>
-              Modifier
-            </button>
-
-            
-          </footer>
-
-          <p>
-            <strong>Régions :</strong> {voyage.regions?.join(", ") || "Non renseigné"}
-          </p>
-
-          <hr />
+        <div className="content card card-travel">
 
           <h2>Étapes</h2>
 
@@ -115,6 +109,7 @@ function InfoVoyagePage() {
                 <br />
 
                 <button
+                  className="cta"
                   onClick={() =>
                     navigate(`/voyages/${voyage.id}/etapes/${etape.id}`)
                   }
@@ -123,25 +118,19 @@ function InfoVoyagePage() {
                 </button>
 
                 <button
+                  className="cta"
                   onClick={() =>
                     navigate(`/voyages/${voyage.id}/etapes/${etape.id}/edit`)
                   }
                 >
                   Modifier
                 </button>
+                <hr />
               </li>
             ))}
           </ul>
 
-          <br />
-
-          <button onClick={() => navigate(`/voyages/${voyage.id}/edit`)}>
-            Modifier le voyage
-          </button>
-
-          <button onClick={() => navigate("/voyages")}>
-            Retour à la liste
-          </button>
+        </div>
         </div>
       </main>
 
