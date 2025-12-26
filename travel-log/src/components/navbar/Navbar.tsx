@@ -22,23 +22,23 @@ export default function Navbar({ isOpen, onToggle }: NavbarProps) {
           {user && (
             <>
               <Link to="/voyages">
-                <button className="nav-link">Mes voyages</button>
+                <a className="nav-link">Mes voyages</a>
               </Link>
 
               <Link to="/voyages/new">
-                <button className="nav-link">Nouveau voyage</button>
+                <a className="nav-link">Nouveau voyage</a>
               </Link>
             </>
           )}
 
           {user ? (
             <>
-              <button
+              <a
                 className="nav-link"
                 onClick={() => setShowMenu(!showMenu)}
               >
                 Mon Compte
-              </button>
+              </a>
 
               {showMenu && (
                 <div className="account-menu">

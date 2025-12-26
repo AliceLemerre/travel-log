@@ -209,11 +209,12 @@ function FormVoyagePage() {
                 Ajouter une étape
               </button>
 
-              <ul>
+              <ul className="content card-travel-preview">
                 {etapes.map((etape) => (
-                  <li key={etape.id}>
+                  <li className="content card-travel-preview-content" key={etape.id}>
                     <strong>{etape.label}</strong>
-                    <br />
+
+                  <footer className="card-footer">
                     <button
                       onClick={() =>
                         navigate(
@@ -236,6 +237,7 @@ function FormVoyagePage() {
                     <button className="cta" onClick={() => deleteEtape(etape.id)}>
                       Supprimer
                     </button>
+                  </footer>
                   </li>
                 ))}
               </ul>

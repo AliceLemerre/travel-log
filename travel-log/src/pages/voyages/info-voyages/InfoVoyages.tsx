@@ -66,6 +66,8 @@ function InfoVoyagePage() {
       <main>
         <div className="content card card-travel">
 
+        <div className="card-travel-top">
+
           <header className="card-header">
             <button className="cta cta-icon" onClick={() => navigate("/voyages")}>
                 ←
@@ -92,22 +94,23 @@ function InfoVoyagePage() {
           </p>
 
           <p>
-            <strong>Dépenses :</strong> {voyage.depenses ?? "Aucune"} €
+            <strong>Dépenses :</strong> {voyage.depenses ?? "0"} €
           </p>
+        </div>
 
-        <div className="content card card-travel">
+        <div className="steps-section">
 
           <h2>Étapes</h2>
 
           {etapes.length === 0 && <p>Aucune étape enregistrée.</p>}
 
-          <ul>
+          <ul className="content card-travel-preview">
             {etapes.map((etape) => (
-              <li key={etape.id}>
+              <li className="content card-travel-preview-content" key={etape.id}>
                 <strong>{etape.label}</strong>
                 {etape.pays && <span> – {etape.pays}</span>}
-                <br />
 
+                <footer className="card-footer">
                 <button
                   className="cta"
                   onClick={() =>
@@ -123,9 +126,10 @@ function InfoVoyagePage() {
                     navigate(`/voyages/${voyage.id}/etapes/${etape.id}/edit`)
                   }
                 >
+                  
                   Modifier
                 </button>
-                <hr />
+                </footer>
               </li>
             ))}
           </ul>

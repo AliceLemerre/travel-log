@@ -88,9 +88,9 @@ function ListVoyagePage() {
             <p>Aucun voyage enregistré.</p>
           )}
 
-          <ul className="content card card-travels">
+          <ul className="content card-travel-preview-content">
             {voyages.map((voyage) => (
-              <li key={voyage.id} className="card-travel card-list">
+              <li key={voyage.id} className="card-travel-preview-content">
                 <strong>{voyage.label}</strong>
                 <br />
                 {voyage.date_depart} → {voyage.date_arrivee}
