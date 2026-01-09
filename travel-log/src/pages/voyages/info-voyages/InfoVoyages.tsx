@@ -128,6 +128,7 @@ function InfoVoyagePage() {
                 >
                   
                   Modifier
+                  <img className="cta-icon" src="./src/assets/images/edit.svg" alt="" />
                 </button>
                 </footer>
               </li>

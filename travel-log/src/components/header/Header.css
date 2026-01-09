@@ -1,0 +1,67 @@
+
+
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.header{
+  background-image: url('../../assets/images/Nice-capitale.jpg');
+  background-position: top right;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 16rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+h1{
+  font-family: 'Apfel Grotesk Bold';
+  color: var(--header-font);
+  margin: 0;
+  margin-bottom: 0.5rem;
+  filter:contrast();
+}
+
+h2{
+  font-size: 1.3rem;
+    color: var(--header-font);
+  font-family: 'Apfel Grotesk';
+  line-height: 1.1;
+  text-align: center;
+  margin: 0;
+}
+
+@media screen and (min-width:650px){
+.header{
+  height: 20rem;
+  background-position: center;
+}
+
+}

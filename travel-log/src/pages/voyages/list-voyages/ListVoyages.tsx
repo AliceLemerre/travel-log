@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "../../../lib/supabaseClient"; 
 import Header from "../../../components/header/Header";
 import Footer from "../../../components/footer/Footer";
+import './ListVoyages.css';
 
 interface Voyage {
   id: number;
@@ -94,70 +95,101 @@ function ListVoyagePage() {
       <Header />
       <main>
         <div className="content card card-travel">
-          <h2>Mes voyages</h2>
 
-          <button className="cta" onClick={() => navigate("/voyages/new")}>
-            Nouveau voyage
-          </button>
+          <header className="card-header card-travel-header">
+            <h3>Mes voyages</h3>
 
-          <div className="filters" style={{ margin: "1em 0" }}>
-            <input
-              type="text"
-              placeholder="Recherche par nom"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
+            <button className="cta cta-round" title="ajouter un voyage" onClick={() => navigate("/voyages/new")}>
+            <img className="cta-icon" src="./src/assets/images/add.svg" alt="" />
+            </button>
+          </header>
 
-            <input
-              type="date"
-              placeholder="Date départ min"
-              value={filterStart || ""}
-              onChange={(e) => setFilterStart(e.target.value || null)}
-            />
-            <input
-              type="date"
-              placeholder="Date arrivée max"
-              value={filterEnd || ""}
-              onChange={(e) => setFilterEnd(e.target.value || null)}
-            />
 
-            <input
-              type="text"
-              placeholder="Filtrer par région"
-              value={filterRegion}
-              onChange={(e) => setFilterRegion(e.target.value)}
-            />
-            <input
-              type="text"
-              placeholder="Filtrer par pays"
-              value={filterPays}
-              onChange={(e) => setFilterPays(e.target.value)}
-            />
-            <input
-              type="text"
-              placeholder="Filtrer par ville"
-              value={filterVille}
-              onChange={(e) => setFilterVille(e.target.value)}
-            />
+          <section className="filters-section" >
+              <p>Filtrer les résultats</p>
+              <input className="checkbox arrow" type="checkbox" />
+              <br />
+          <div className="filters">
 
-            <button onClick={() => setSortAsc((v) => !v)}>
+            <label className="label-column">
+              Recherche par titre
+              <input
+                type="text"
+                placeholder="titre du voyage"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+            </label>
+
+            <label className="label-column">
+              Date de début
+                <input
+                  type="date"
+                  value={filterStart || ""}
+                  onChange={(e) => setFilterStart(e.target.value || null)}
+                />
+            </label>
+
+            <label className="label-column">
+              Date de fin
+              <input
+                type="date"
+                value={filterEnd || ""}
+                onChange={(e) => setFilterEnd(e.target.value || null)}
+              />
+            </label>
+
+            <label className="label-column">
+              Filtrer par région
+              <input
+                type="text"
+                placeholder="région"
+                value={filterRegion}
+                onChange={(e) => setFilterRegion(e.target.value)}
+              />
+            </label>
+
+            <label className="label-column">
+              Filtrer par pays
+              <input
+                type="text"
+                placeholder="pays"
+                value={filterPays}
+                onChange={(e) => setFilterPays(e.target.value)}
+              />
+            </label>
+
+            <label className="label-column">
+              Filtrer par ville
+              <input
+                type="text"
+                placeholder="ville"
+                value={filterVille}
+                onChange={(e) => setFilterVille(e.target.value)}
+              />
+            </label>
+
+
+            <button className="filter-cta" onClick={() => setSortAsc((v) => !v)}>
               Trier par label {sortAsc ? "↑" : "↓"}
             </button>
 
-            <button onClick={resetFilters} style={{ marginLeft: "8px" }}>
+            <button className="filter-cta" onClick={resetFilters} style={{ marginLeft: "8px" }}>
               Réinitialiser les filtres
+              {/* <img className="cta-icon filter-icon icon-unset" src="./src/assets/images/add.svg" alt="" /> */}
             </button>
           </div>
+          </section>
+
 
           {/* Equivalent du if */}
           {loading && <p>Chargement...</p>}
           {!loading && voyages.length === 0 && <p>Aucun voyage trouvé.</p>}
 
-          <ul className="content card-travel-preview-content">
+          <ul className="content card-travel-preview">
             {voyages.map((voyage) => (
               <li key={voyage.id} className="card-travel-preview-content">
-                <strong>{voyage.label}</strong>
-                <br />
+                <h4>{voyage.label}</h4>
                 {(voyage.date_depart || voyage.date_arrivee) && (
                   <span>
                     {voyage.date_depart ?? ""} {voyage.date_depart && voyage.date_arrivee ? "→" : ""} {voyage.date_arrivee ?? ""}
@@ -172,20 +204,22 @@ function ListVoyagePage() {
                     onClick={() => navigate(`/voyages/${voyage.id}`)}
                   >
                     Détails
+                    {/* <img className="cta-icon" src="./src/assets/images/eye.svg" alt="" /> */}
                   </button>
-
                   <button 
                     className="cta"
                     onClick={() => navigate(`/voyages/${voyage.id}/edit`)}
                   >
                     Modifier
+                    {/* <img className="cta-icon" src="./src/assets/images/edit.svg" alt="" /> */}
                   </button>
 
                   <button
-                    className="cta"
+                    className="cta cta-danger"
                     onClick={() => deleteVoyage(voyage.id)}
                   >
                     Supprimer
+                    {/* <img className="cta-icon icon-unset" src="./src/assets/images/add.svg" alt="" /> */}
                   </button>
                 </footer>
               </li>

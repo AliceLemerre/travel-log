@@ -145,42 +145,42 @@ function FormVoyagePage() {
       <Header />
       <main>
         <div className="content card card-travel card-form">
-          <h2>
+          <h3>
             {mode === "add" ? "Créer un voyage" : "Modifier un voyage"}
-          </h2>
+          </h3>
 
           <form onSubmit={handleSubmit}>
-            <label>
+            <label className="label-column">
               Nom du voyage
               <input type="text" name="label" value={form.label} onChange={handleChange} required />
             </label>
 
-            <label>
+            <label className="label-column">
               Régions
               <input type="text" name="regions" value={form.regions?.join(", ") || ""} onChange={handleChange} />
             </label>
 
-            <label>
+            <label className="label-column">
               Pays
               <input type="text" name="pays" value={form.pays?.join(", ") || ""} onChange={handleChange} />
             </label>
 
-            <label>
+            <label className="label-column">
               Villes
               <input type="text" name="villes" value={form.villes?.join(", ") || ""} onChange={handleChange} />
             </label>
 
-            <label>
+            <label className="label-column">
               Date de départ
               <input type="date" name="date_depart" value={form.date_depart || ""} onChange={handleChange} />
             </label>
 
-            <label>
+            <label className="label-column">
               Date d'arrivée
               <input type="date" name="date_arrivee" value={form.date_arrivee || ""} onChange={handleChange} />
             </label>
 
-            <label>
+            <label className="label-column">
               Budget
               <input type="number" name="budget" value={form.budget ?? ""} onChange={handleChange} />
             </label>
@@ -188,7 +188,7 @@ function FormVoyagePage() {
             <button className="cta" type="submit">
               {mode === "add" ? "Créer" : "Mettre à jour"}
             </button>
-            <label>
+            <label className="label-column">
               Dépenses
               <input type="number" name="depenses" value={form.depenses ?? ""} onChange={handleChange} />
             </label>
@@ -209,6 +209,7 @@ function FormVoyagePage() {
 
               <button onClick={() => navigate(`/voyages/${id}/etapes/new`)}>
                 Ajouter une étape
+                <img className="cta-icon" src="./src/assets/images/add.svg" alt="" />
               </button>
 
               <ul className="content card-travel-preview">
@@ -238,16 +239,17 @@ function FormVoyagePage() {
                     </button>
                     <button className="cta" onClick={() => deleteEtape(etape.id)}>
                       Supprimer
+                      <img className="cta-icon" src="./src/assets/images/close.svg" alt="" />
                     </button>
                   </footer>
                     <br />
-                    <button onClick={() => navigate(`/voyages/${id}/etapes/${etape.id}`)}>
+                    {/* <button onClick={() => navigate(`/voyages/${id}/etapes/${etape.id}`)}>
                       Détails
                     </button>
                     <button onClick={() => navigate(`/voyages/${id}/etapes/${etape.id}/edit`)}>
                       Modifier
                     </button>
-                    <button onClick={() => deleteEtape(etape.id)}>Supprimer</button>
+                    <button onClick={() => deleteEtape(etape.id)}>Supprimer</button> */}
                   </li>
                 ))}
               </ul>

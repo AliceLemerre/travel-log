@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import './Navbar.css'
 
 interface NavbarProps {
   isOpen: boolean;
@@ -18,7 +19,15 @@ export default function Navbar({ isOpen, onToggle }: NavbarProps) {
           Menu
         </button> */}
 
-        <div className={`nav-links ${isOpen ? "open" : ""}`}>
+        <input className="checkbox" type="checkbox" />
+        <div className="hamburger-lines">
+        <span className="line line1"></span>
+        <span className="line line2"></span>
+        <span className="line line3"></span>
+        </div>
+    
+
+        <div className={`menu-items nav-links ${isOpen ? "open" : ""}`}>
           {user && (
             <>
               <Link to="/voyages">
@@ -29,6 +38,8 @@ export default function Navbar({ isOpen, onToggle }: NavbarProps) {
                 <a className="nav-link">Nouveau voyage</a>
               </Link>
             </>
+
+           
           )}
 
           {user ? (
@@ -39,14 +50,19 @@ export default function Navbar({ isOpen, onToggle }: NavbarProps) {
               >
                 Mon Compte
               </a>
+              
+              <input type="checkbox" id="dark-mode-toggle" />
+              <label htmlFor="dark-mode-toggle" className="toggle"></label>
+
 
               {showMenu && (
-                <div className="account-menu">
-                  <button className="menu-item">Liste des Tags</button>
-                  <button className="menu-item">Mon Profil</button>
-                  <button className="menu-item logout" onClick={logout}>
+                <div className="account-menu nav-links">
+                  <a className="menu-item nav-link">Liste des Tags</a>
+                  <a className="menu-item nav-link">Mon Profil</a>
+                  <button className="menu-item cta cta-danger logout" onClick={logout}>
                     Déconnexion
                   </button>
+
                 </div>
               )}
             </>

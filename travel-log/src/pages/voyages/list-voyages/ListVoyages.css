@@ -1,0 +1,247 @@
+.filter-cta{
+border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.3em 0.8em;
+  font-size: 0.9em;
+  background-color: var(--dark-grey);
+  color: var(--light-grey);
+  cursor: pointer;
+}
+
+.filters-section{
+    background-color: var(--grey);
+    border-radius: 0.3rem;
+    padding: 0.5rem 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.filters-section p{
+    margin: 0.5rem 0;
+}
+
+
+.filters{
+    height: 0rem;
+    display: flex;
+    overflow: hidden;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 auto;  
+    padding: 0;
+}
+
+.filters-section-header{
+    display: flex;
+}
+
+.filters-header{
+    display: flex;
+
+}
+
+.filters-section input[type="checkbox"]:checked ~ .filters {
+  height: 100%;
+}
+
+
+.label-column{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.card-travel-preview-content{
+    border: 0.5px solid var(--grey);
+    padding: 0.5rem;
+    border-radius: 0.4rem;
+}
+
+
+.card-travel-header .cta{
+    aspect-ratio: 1/1;
+}
+
+.arrow {
+    height: 0.75rem;
+    width: 0.75rem;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -o-appearance: none;
+    appearance: none;
+    border: solid var(--light-grey);
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    margin: 8px 0 0 auto;
+    }
+
+.filters-section input[type="checkbox"]:checked {
+  transform: rotate(225deg);
+    -webkit-transform: rotate(225deg);
+}
+
+/*cards*/
+
+.card {
+  padding: 4rem;
+  position: relative;
+  margin: 1.5rem;
+}
+
+
+.card-header{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-header-cta{
+  padding: 0.4rem 1rem;
+
+}
+
+.card-travels{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+.card-dates{
+  text-align: center;
+  margin: 0.2 0;
+}
+
+.card-date{
+  padding: 0.3rem 0.8rem;
+  background-color: var(--light-blue);
+  border-radius: 100px;
+}
+
+.card li{
+  list-style: none;
+}
+
+
+.card-form form{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.card-form label{
+  display: flex;
+  flex-direction: column;
+  flex: 0 1;
+}
+
+.card-form input, .filters input{
+  padding: 0.3rem 0.8rem;
+  margin-top: 0.5rem;
+  margin-top: 0.5rem;
+  background: var(--dark-grey);
+  border-radius: 0.2rem;
+  color: var(--light-grey)
+}
+
+
+.card-travel{
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.card-travel-preview, .card-travel-preview-content{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  align-items: center;
+}
+
+.card-travel-preview{
+    gap: 1rem;
+
+}
+
+
+.steps-section{
+  width: 100%;
+}
+
+.card-footer{
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  padding-top: 1rem;
+  justify-content: center;
+}
+
+@media screen and (min-width: 760px) {
+
+  main{
+    display: flex;
+    justify-content: center;
+  }
+
+  .card-travel {
+  align-items: flex-start;
+    max-width: 1000px;
+
+  }
+
+    .card-travel-preview  {
+  flex-direction: row;
+  flex-wrap: wrap;
+  max-width: 24rem;
+  }
+
+.card-travel-preview-content {
+  max-width: 24rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  }
+
+  .filters {
+  flex-direction: row;
+  max-width: 100%;
+  flex-wrap: wrap;
+  }
+
+  .label-column {
+  width: 1;
+  }
+  
+  .card-travel-preview-content {
+  max-width: 22rem;
+  }
+
+  .filters {
+  flex-direction: row;
+  flex-wrap: wrap;
+  }
+
+  .filters-section input[type="checkbox"]:checked ~ .filters {
+  padding-bottom: 2rem;
+}
+
+
+  .label-column {
+  max-width: 13rem;
+  }
+  
+}
