@@ -30,6 +30,7 @@ interface Media {
   id: number;
   nom: string;
   url: string;
+  isMain: boolean | null;
 }
 
 interface Tag {
@@ -46,6 +47,7 @@ function InfoVoyagePage() {
   const [medias, setMedias] = useState<Media[]>([]);
   const [tags, setTags] = useState<Tag[]>([]);
   const [selectedMedia, setSelectedMedia] = useState<Media | null>(null);
+  const [mainMedia, setMainMedia] = useState<Media | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -80,9 +82,10 @@ function InfoVoyagePage() {
       setVoyage(voyageData || null);
       setEtapes(etapesData || []);
       setMedias(mediasData || []);
-      setTags(
-        tagsData?.map((t: any) => t.Tags).filter(Boolean) || []
-      );
+      setTags(tagsData?.map((t: any) => t.Tags).filter(Boolean) || []);
+
+      const main = mediasData?.find((m) => m.isMain) || null;
+      setMainMedia(main);
 
       setLoading(false);
     }
@@ -114,6 +117,24 @@ function InfoVoyagePage() {
             </header>
 
             <h2>{voyage.label}</h2>
+
+            {}
+            {mainMedia && (
+              <div style={{ marginTop: 12, textAlign: "center" }}>
+                <img
+                  src={mainMedia.url}
+                  alt={mainMedia.nom}
+                  style={{
+                    width: "100%",
+                    maxHeight: 400,
+                    objectFit: "cover",
+                    borderRadius: 12,
+                  }}
+                  onClick={() => setSelectedMedia(mainMedia)}
+                />
+                <p style={{ marginTop: 6 }}>{mainMedia.nom}</p>
+              </div>
+            )}
 
             {(voyage.date_depart || voyage.date_arrivee) && (
               <p className="card-dates">
@@ -178,8 +199,10 @@ function InfoVoyagePage() {
                         objectFit: "cover",
                         borderRadius: 8,
                         cursor: "pointer",
+                        border: media.isMain ? "3px solid green" : "1px solid #ccc",
                       }}
                     />
+                    <p>{media.nom}</p>
                     <a
                       href={media.url}
                       download={media.nom}
