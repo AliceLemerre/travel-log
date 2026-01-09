@@ -57,7 +57,9 @@ export default function Navbar({ isOpen, onToggle }: NavbarProps) {
 
               {showMenu && (
                 <div className="account-menu nav-links">
-                  <a className="menu-item nav-link">Liste des Tags</a>
+                  <Link to="/tags">
+                    <a className="menu-item nav-link">Liste des Tags</a>
+                  </Link>
                   <a className="menu-item nav-link">Mon Profil</a>
                   <button className="menu-item cta cta-danger logout" onClick={logout}>
                     Déconnexion
