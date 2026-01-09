@@ -43,6 +43,7 @@ function FormVoyagePage() {
 
   const [etapes, setEtapes] = useState<Etape[]>([]);
   const [searchEtape, setSearchEtape] = useState("");
+  const [errors, setErrors] = useState<{ label?: string }>({});
 
   async function loadEtapes(search = "") {
     if (!id) return;
@@ -106,14 +107,29 @@ function FormVoyagePage() {
     }
   }
 
+  function validateForm() {
+    const newErrors: { label?: string } = {};
+
+    if (!form.label.trim()) {
+      newErrors.label = "Le nom du voyage est obligatoire";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (!validateForm()) return;
 
     const {
       data: { user },
     } = await supabase.auth.getUser();
-
-    if (!user) return;
+   
+    if (!user) {
+      alert("Vous devez être connecté.");
+      return;
+    }
 
     if (mode === "add") {
       const { error } = await supabase.from("Voyages").insert({
@@ -122,6 +138,7 @@ function FormVoyagePage() {
       });
 
       if (!error) navigate("/voyages");
+
     } else {
       const { error } = await supabase
         .from("Voyages")

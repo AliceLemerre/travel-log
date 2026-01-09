@@ -28,6 +28,8 @@ function EtapeFormPage() {
     depenses: null,
   });
 
+  const [errors, setErrors] = useState<{ label?: string }>({});
+
   useEffect(() => {
     if (!etapeId) return;
 
@@ -53,6 +55,17 @@ function EtapeFormPage() {
     loadEtape();
   }, [etapeId]);
 
+  function validateForm() {
+    const newErrors: { label?: string } = {};
+
+    if (!form.label.trim()) {
+      newErrors.label = "Le nom de l’étape est obligatoire";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  }
+
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     const { name, value } = e.target;
     setForm((f) => ({ ...f, [name]: value }));
@@ -60,6 +73,7 @@ function EtapeFormPage() {
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+    if (!validateForm()) return;
 
     const {
       data: { user },
