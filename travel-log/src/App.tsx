@@ -11,6 +11,8 @@ import LoginPage from "./components/auth/LoginPage";
 import SignupPage from "./components/auth/SignupPage";
 import InfoEtapesPage from "./pages/etapes/info-etapes/InfoEtapes";
 import Page404 from "./pages/404/Page404";
+import TagListPage from "./pages/tags/list-tags/TagListPage";
+import TagFormPage from "./pages/tags/form-tags/TagFormPage";
 
 function App() {
   return (
@@ -83,6 +85,21 @@ function App() {
               <EtapeFormPage />
             </PrivateRoute>
           }
+        />
+
+        <Route 
+          path="/tags" 
+          element={<TagListPage />} 
+        />
+
+        <Route 
+          path="/tags/new" 
+          element={<TagFormPage />} 
+        />
+
+        <Route 
+          path="/tags/:id/edit" 
+          element={<TagFormPage />} 
         />
 
         <Route path="/404" element={<Page404 />} />

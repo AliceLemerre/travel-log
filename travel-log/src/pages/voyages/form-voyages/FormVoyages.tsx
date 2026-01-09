@@ -18,11 +18,11 @@ interface Voyage {
 interface Etape {
   id: number;
   label: string;
-  adresse: string | null;
-  pays: string | null;
-  region: string | null;
-  notes: string | null;
-  depenses: number | null;
+}
+
+interface Tag {
+  id: number;
+  titre: string;
 }
 
 function FormVoyagePage() {
@@ -45,6 +45,9 @@ function FormVoyagePage() {
   const [searchEtape, setSearchEtape] = useState("");
   const [errors, setErrors] = useState<{ label?: string }>({});
 
+  const [allTags, setAllTags] = useState<Tag[]>([]);
+  const [selectedTags, setSelectedTags] = useState<number[]>([]);
+
   async function loadEtapes(search = "") {
     if (!id) return;
 
@@ -59,6 +62,22 @@ function FormVoyagePage() {
 
     const { data } = await query;
     setEtapes(data || []);
+  }
+
+  async function loadTags() {
+    const { data } = await supabase.from("Tags").select("id, titre");
+    setAllTags(data || []);
+  }
+
+  async function loadVoyageTags() {
+    if (!id) return;
+
+    const { data } = await supabase
+      .from("Tags_voyage")
+      .select("tag_id")
+      .eq("voyage_id", Number(id));
+
+    setSelectedTags(data?.map((t) => t.tag_id) || []);
   }
 
   useEffect(() => {
@@ -85,6 +104,8 @@ function FormVoyagePage() {
       }
 
       await loadEtapes();
+      await loadTags();
+      await loadVoyageTags();
     }
 
     loadAll();
@@ -94,12 +115,11 @@ function FormVoyagePage() {
     loadEtapes(searchEtape);
   }, [searchEtape]);
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
 
     if (["regions", "pays", "villes"].includes(name)) {
-      const arr = value.split(",").map((s) => s.trim());
-      setForm((f) => ({ ...f, [name]: arr }));
+      setForm((f) => ({ ...f, [name]: value.split(",").map((v) => v.trim()) }));
     } else if (["budget", "depenses"].includes(name)) {
       setForm((f) => ({ ...f, [name]: value ? Number(value) : null }));
     } else {
@@ -107,13 +127,17 @@ function FormVoyagePage() {
     }
   }
 
+  function toggleTag(tagId: number) {
+    setSelectedTags((prev) =>
+      prev.includes(tagId)
+        ? prev.filter((id) => id !== tagId)
+        : [...prev, tagId]
+    );
+  }
+
   function validateForm() {
     const newErrors: { label?: string } = {};
-
-    if (!form.label.trim()) {
-      newErrors.label = "Le nom du voyage est obligatoire";
-    }
-
+    if (!form.label.trim()) newErrors.label = "Nom obligatoire";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   }
@@ -125,158 +149,153 @@ function FormVoyagePage() {
     const {
       data: { user },
     } = await supabase.auth.getUser();
-   
-    if (!user) {
-      alert("Vous devez être connecté.");
-      return;
-    }
+
+    if (!user) return;
 
     if (mode === "add") {
-      const { error } = await supabase.from("Voyages").insert({
-        ...form,
-        user_id: user.id,
-      });
+      const { data, error } = await supabase
+        .from("Voyages")
+        .insert({ ...form, user_id: user.id })
+        .select()
+        .single();
 
-      if (!error) navigate("/voyages");
+      if (!error && data) navigate(`/voyages/${data.id}/edit`);
+    }
 
-    } else {
+    if (mode === "update") {
       const { error } = await supabase
         .from("Voyages")
         .update(form)
         .eq("id", Number(id));
 
-      if (!error) navigate(`/voyages/${id}/edit`);
+      if (error) return;
+
+      await supabase.from("Tags_voyage").delete().eq("voyage_id", Number(id));
+
+      if (selectedTags.length > 0) {
+        await supabase.from("Tags_voyage").insert(
+          selectedTags.map((tagId) => ({
+            tag_id: tagId,
+            voyage_id: Number(id),
+          }))
+        );
+      }
+
+      navigate(`/voyages/${id}/edit`);
     }
-  }
-
-  async function deleteEtape(etapeId: number) {
-    const confirmDelete = window.confirm("Supprimer cette étape ?");
-    if (!confirmDelete) return;
-
-    const { error } = await supabase.from("Etapes").delete().eq("id", etapeId);
-    if (!error) loadEtapes(searchEtape);
   }
 
   return (
     <div className="form-voyages-page">
       <Header />
+
       <main>
         <div className="content card card-travel card-form">
-          <h3>
-            {mode === "add" ? "Créer un voyage" : "Modifier un voyage"}
-          </h3>
+          <h3>{mode === "add" ? "Créer un voyage" : "Modifier un voyage"}</h3>
 
           <form onSubmit={handleSubmit}>
-            <label className="label-column">
-              Nom du voyage
-              <input type="text" name="label" value={form.label} onChange={handleChange} required />
+            <label>
+              Nom *
+              <input name="label" value={form.label} onChange={handleChange} />
+              {errors.label && <p className="error">{errors.label}</p>}
             </label>
 
-            <label className="label-column">
+            <label>
               Régions
-              <input type="text" name="regions" value={form.regions?.join(", ") || ""} onChange={handleChange} />
+              <input
+                name="regions"
+                value={form.regions?.join(", ") || ""}
+                onChange={handleChange}
+              />
             </label>
 
-            <label className="label-column">
+            <label>
               Pays
-              <input type="text" name="pays" value={form.pays?.join(", ") || ""} onChange={handleChange} />
+              <input
+                name="pays"
+                value={form.pays?.join(", ") || ""}
+                onChange={handleChange}
+              />
             </label>
 
-            <label className="label-column">
+            <label>
               Villes
-              <input type="text" name="villes" value={form.villes?.join(", ") || ""} onChange={handleChange} />
+              <input
+                name="villes"
+                value={form.villes?.join(", ") || ""}
+                onChange={handleChange}
+              />
             </label>
 
-            <label className="label-column">
-              Date de départ
-              <input type="date" name="date_depart" value={form.date_depart || ""} onChange={handleChange} />
+            <label>
+              Date départ
+              <input
+                type="date"
+                name="date_depart"
+                value={form.date_depart || ""}
+                onChange={handleChange}
+              />
             </label>
 
-            <label className="label-column">
-              Date d'arrivée
-              <input type="date" name="date_arrivee" value={form.date_arrivee || ""} onChange={handleChange} />
+            <label>
+              Date arrivée
+              <input
+                type="date"
+                name="date_arrivee"
+                value={form.date_arrivee || ""}
+                onChange={handleChange}
+              />
             </label>
 
-            <label className="label-column">
+            <label>
               Budget
-              <input type="number" name="budget" value={form.budget ?? ""} onChange={handleChange} />
+              <input
+                type="number"
+                name="budget"
+                value={form.budget ?? ""}
+                onChange={handleChange}
+              />
             </label>
+
+            <label>
+              Dépenses
+              <input
+                type="number"
+                name="depenses"
+                value={form.depenses ?? ""}
+                onChange={handleChange}
+              />
+            </label>
+
+            {mode === "update" && (
+              <>
+                <h4>Tags</h4>
+                <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+                  {allTags.map((tag) => (
+                    <label key={tag.id}>
+                      <input
+                        type="checkbox"
+                        checked={selectedTags.includes(tag.id)}
+                        onChange={() => toggleTag(tag.id)}
+                      />{" "}
+                      {tag.titre}
+                    </label>
+                  ))}
+                </div>
+              </>
+            )}
 
             <button className="cta" type="submit">
               {mode === "add" ? "Créer" : "Mettre à jour"}
             </button>
-            <label className="label-column">
-              Dépenses
-              <input type="number" name="depenses" value={form.depenses ?? ""} onChange={handleChange} />
-            </label>
-
-            <button type="submit">{mode === "add" ? "Créer" : "Mettre à jour"}</button>
           </form>
-
-          {id && (
-            <>
-              <h2>Étapes</h2>
-
-              <input
-                type="text"
-                placeholder="Rechercher une étape"
-                value={searchEtape}
-                onChange={(e) => setSearchEtape(e.target.value)}
-              />
-
-              <button onClick={() => navigate(`/voyages/${id}/etapes/new`)}>
-                Ajouter une étape
-                <img className="cta-icon" src="./src/assets/images/add.svg" alt="" />
-              </button>
-
-              <ul className="content card-travel-preview">
-                {etapes.map((etape) => (
-                  <li className="content card-travel-preview-content" key={etape.id}>
-                    <strong>{etape.label}</strong>
-
-                  <footer className="card-footer">
-                    <button
-                      onClick={() =>
-                        navigate(
-                          `/voyages/${id}/etapes/${etape.id}`
-                        )
-                      }
-                    >
-                      Détails
-                    </button>
-                    <button
-                      className="cta"
-                      onClick={() =>
-                        navigate(
-                          `/voyages/${id}/etapes/${etape.id}/edit`
-                        )
-                      }
-                    >
-                      Modifier
-                    </button>
-                    <button className="cta" onClick={() => deleteEtape(etape.id)}>
-                      Supprimer
-                      <img className="cta-icon" src="./src/assets/images/close.svg" alt="" />
-                    </button>
-                  </footer>
-                    <br />
-                    {/* <button onClick={() => navigate(`/voyages/${id}/etapes/${etape.id}`)}>
-                      Détails
-                    </button>
-                    <button onClick={() => navigate(`/voyages/${id}/etapes/${etape.id}/edit`)}>
-                      Modifier
-                    </button>
-                    <button onClick={() => deleteEtape(etape.id)}>Supprimer</button> */}
-                  </li>
-                ))}
-              </ul>
-            </>
-          )}
         </div>
       </main>
+
       <Footer />
     </div>
   );
 }
 
 export default FormVoyagePage;
+

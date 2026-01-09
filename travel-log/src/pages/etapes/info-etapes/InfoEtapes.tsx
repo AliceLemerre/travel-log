@@ -20,12 +20,18 @@ interface Media {
   url: string;
 }
 
+interface Tag {
+  id: number;
+  titre: string;
+}
+
 function EtapeDetailPage() {
   const { voyageId, etapeId } = useParams();
   const navigate = useNavigate();
 
   const [etape, setEtape] = useState<Etape | null>(null);
   const [medias, setMedias] = useState<Media[]>([]);
+  const [tags, setTags] = useState<Tag[]>([]);
   const [selectedMedia, setSelectedMedia] = useState<Media | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -51,6 +57,16 @@ function EtapeDetailPage() {
         .order("created_at", { ascending: true });
 
       setMedias(mediasData || []);
+
+      const { data: tagsData } = await supabase
+        .from("Tags_etapes")
+        .select("Tags ( id, titre )")
+        .eq("etape_id", Number(etapeId));
+
+      setTags(
+        tagsData?.map((row: any) => row.Tags).filter(Boolean) || []
+      );
+
       setLoading(false);
     }
 
@@ -59,19 +75,17 @@ function EtapeDetailPage() {
 
   if (loading) {
     return (
-      <div>
+      <>
         <Header />
-        <main>
-          <p>Chargement...</p>
-        </main>
+        <main><p>Chargement...</p></main>
         <Footer />
-      </div>
+      </>
     );
   }
 
   if (!etape) {
     return (
-      <div>
+      <>
         <Header />
         <main>
           <p>Étape introuvable</p>
@@ -83,7 +97,7 @@ function EtapeDetailPage() {
           </button>
         </main>
         <Footer />
-      </div>
+      </>
     );
   }
 
@@ -99,30 +113,49 @@ function EtapeDetailPage() {
           {etape.pays && <p><strong>Pays :</strong> {etape.pays}</p>}
           {etape.region && <p><strong>Région :</strong> {etape.region}</p>}
           {etape.notes && <p><strong>Notes :</strong> {etape.notes}</p>}
-          {etape.depenses !== null && <p><strong>Dépenses :</strong> {etape.depenses} €</p>}
+          {etape.depenses !== null && (
+            <p><strong>Dépenses :</strong> {etape.depenses} €</p>
+          )}
 
-          {}
+          {tags.length > 0 && (
+            <>
+              <h2>Tags</h2>
+              <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                {tags.map((tag) => (
+                  <span
+                    key={tag.id}
+                    style={{
+                      padding: "4px 10px",
+                      background: "#eee",
+                      borderRadius: 12,
+                      fontSize: 14,
+                    }}
+                  >
+                    {tag.titre}
+                  </span>
+                ))}
+              </div>
+            </>
+          )}
+
           {medias.length > 0 && (
             <>
               <h2>Médias</h2>
-
-              <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 10 }}>
+              <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
                 {medias.map((media) => (
                   <div key={media.id} style={{ textAlign: "center" }}>
                     <img
                       src={media.url}
                       alt={media.nom}
-                      title={media.nom}
                       onClick={() => setSelectedMedia(media)}
                       style={{
                         width: 150,
                         height: 150,
                         objectFit: "cover",
-                        borderRadius: 6,
                         cursor: "pointer",
+                        borderRadius: 6,
                       }}
                     />
-
                     <a
                       href={media.url}
                       download={media.nom}
@@ -140,7 +173,9 @@ function EtapeDetailPage() {
           <div style={{ marginTop: 24 }}>
             <button
               className="cta"
-              onClick={() => navigate(`/voyages/${voyageId}/etapes/${etape.id}/edit`)}
+              onClick={() =>
+                navigate(`/voyages/${voyageId}/etapes/${etape.id}/edit`)
+              }
             >
               Modifier
             </button>
@@ -156,7 +191,6 @@ function EtapeDetailPage() {
         </div>
       </main>
 
-      {}
       {selectedMedia && (
         <div
           onClick={() => setSelectedMedia(null)}
@@ -173,11 +207,7 @@ function EtapeDetailPage() {
           <img
             src={selectedMedia.url}
             alt={selectedMedia.nom}
-            style={{
-              maxWidth: "90%",
-              maxHeight: "90%",
-              borderRadius: 12,
-            }}
+            style={{ maxWidth: "90%", maxHeight: "90%" }}
           />
         </div>
       )}
