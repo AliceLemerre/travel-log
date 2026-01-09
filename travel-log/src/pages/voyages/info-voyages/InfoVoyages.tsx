@@ -64,47 +64,55 @@ function InfoVoyagePage() {
       <Header />
 
       <main>
-        <div className="content">
-          <h1>{voyage.label}</h1>
+        <div className="content card card-travel">
 
-          <p>
-            <strong>Dates :</strong> {voyage.date_depart} → {voyage.date_arrivee}
+        <div className="card-travel-top">
+
+          <header className="card-header">
+            <button className="cta cta-icon" onClick={() => navigate("/voyages")}>
+                ←
+            </button>
+
+            <button className="cta card-header-cta" onClick={() => navigate(`/voyages/${voyage.id}/edit`)}>
+              Modifier
+            </button>
+          </header>
+          
+          <h2>{voyage.label}</h2>
+
+          <p className="card-dates">
+             <span className="card-date">{voyage.date_depart}</span> → <span className="card-date">{voyage.date_arrivee}</span>
           </p>
+
+           <p>
+            {voyage.pays?.join(", ") || "Non renseigné"}, {voyage.villes?.join(", ") || "Non renseigné"}, {voyage.regions?.join(", ") || "Non renseigné"}
+          </p>
+
 
           <p>
             <strong>Budget :</strong> {voyage.budget ?? "Non renseigné"} €
           </p>
 
           <p>
-            <strong>Dépenses :</strong> {voyage.depenses ?? "Aucune"} €
+            <strong>Dépenses :</strong> {voyage.depenses ?? "0"} €
           </p>
+        </div>
 
-          <p>
-            <strong>Pays :</strong> {voyage.pays?.join(", ") || "Non renseigné"}
-          </p>
-
-          <p>
-            <strong>Villes :</strong> {voyage.villes?.join(", ") || "Non renseigné"}
-          </p>
-
-          <p>
-            <strong>Régions :</strong> {voyage.regions?.join(", ") || "Non renseigné"}
-          </p>
-
-          <hr />
+        <div className="steps-section">
 
           <h2>Étapes</h2>
 
           {etapes.length === 0 && <p>Aucune étape enregistrée.</p>}
 
-          <ul>
+          <ul className="content card-travel-preview">
             {etapes.map((etape) => (
-              <li key={etape.id}>
+              <li className="content card-travel-preview-content" key={etape.id}>
                 <strong>{etape.label}</strong>
                 {etape.pays && <span> – {etape.pays}</span>}
-                <br />
 
+                <footer className="card-footer">
                 <button
+                  className="cta"
                   onClick={() =>
                     navigate(`/voyages/${voyage.id}/etapes/${etape.id}`)
                   }
@@ -113,25 +121,21 @@ function InfoVoyagePage() {
                 </button>
 
                 <button
+                  className="cta"
                   onClick={() =>
                     navigate(`/voyages/${voyage.id}/etapes/${etape.id}/edit`)
                   }
                 >
+                  
                   Modifier
+                  <img className="cta-icon" src="./src/assets/images/edit.svg" alt="" />
                 </button>
+                </footer>
               </li>
             ))}
           </ul>
 
-          <br />
-
-          <button onClick={() => navigate(`/voyages/${voyage.id}/edit`)}>
-            Modifier le voyage
-          </button>
-
-          <button onClick={() => navigate("/voyages")}>
-            Retour à la liste
-          </button>
+        </div>
         </div>
       </main>
 

@@ -56,8 +56,8 @@ function EtapeDetailPage() {
         <Header />
         <main>
           <p>Étape introuvable</p>
-          <button onClick={() => navigate(`/voyages/${voyageId}/edit`)}>
-            Retour au voyage
+          <button className="cta cta-icon" onClick={() => navigate(`/voyages/${voyageId}/edit`)}>
+            ←
           </button>
         </main>
         <Footer />
@@ -70,7 +70,7 @@ function EtapeDetailPage() {
       <Header />
 
       <main>
-        <div className="content">
+        <div className="content card card-travel">
           <h1>{etape.label}</h1>
 
           {etape.adresse && <p><strong>Adresse :</strong> {etape.adresse}</p>}
@@ -83,6 +83,7 @@ function EtapeDetailPage() {
 
           <div style={{ marginTop: 20 }}>
             <button
+              className="cta"
               onClick={() =>
                 navigate(`/voyages/${voyageId}/etapes/${etape.id}/edit`)
               }
@@ -90,11 +91,12 @@ function EtapeDetailPage() {
               Modifier
             </button>
 
-            <button
+            {/* <button
+             className="cta"
               onClick={() => navigate(`/voyages/${voyageId}/edit`)}
             >
               Retour au voyage
-            </button>
+            </button> */}
           </div>
         </div>
       </main>
