@@ -18,11 +18,23 @@ interface Voyage {
 interface Etape {
   id: number;
   label: string;
+  adresse?: string | null;
+  pays?: string | null;
+  region?: string | null;
+  notes?: string | null;
+  depenses?: number | null;
 }
 
 interface Tag {
   id: number;
   titre: string;
+}
+
+interface Media {
+  id: number;
+  nom: string;
+  url: string;
+  isMain: boolean | null;
 }
 
 function FormVoyagePage() {
@@ -48,17 +60,14 @@ function FormVoyagePage() {
   const [allTags, setAllTags] = useState<Tag[]>([]);
   const [selectedTags, setSelectedTags] = useState<number[]>([]);
 
+  const [medias, setMedias] = useState<Media[]>([]);
+  const [selectedMainMedia, setSelectedMainMedia] = useState<number | null>(null);
+
   async function loadEtapes(search = "") {
     if (!id) return;
 
-    let query = supabase
-      .from("Etapes")
-      .select("*")
-      .eq("voyage_id", Number(id));
-
-    if (search) {
-      query = query.ilike("label", `%${search}%`);
-    }
+    let query = supabase.from("Etapes").select("*").eq("voyage_id", Number(id));
+    if (search) query = query.ilike("label", `%${search}%`);
 
     const { data } = await query;
     setEtapes(data || []);
@@ -78,6 +87,19 @@ function FormVoyagePage() {
       .eq("voyage_id", Number(id));
 
     setSelectedTags(data?.map((t) => t.tag_id) || []);
+  }
+
+  async function loadMedias() {
+    if (!id) return;
+
+    const { data } = await supabase
+      .from("Medias")
+      .select("*")
+      .eq("voyage_id", Number(id));
+
+    setMedias(data || []);
+    const mainMedia = data?.find((m) => m.isMain)?.id || null;
+    setSelectedMainMedia(mainMedia);
   }
 
   useEffect(() => {
@@ -106,6 +128,7 @@ function FormVoyagePage() {
       await loadEtapes();
       await loadTags();
       await loadVoyageTags();
+      await loadMedias();
     }
 
     loadAll();
@@ -129,15 +152,13 @@ function FormVoyagePage() {
 
   function toggleTag(tagId: number) {
     setSelectedTags((prev) =>
-      prev.includes(tagId)
-        ? prev.filter((id) => id !== tagId)
-        : [...prev, tagId]
+      prev.includes(tagId) ? prev.filter((id) => id !== tagId) : [...prev, tagId]
     );
   }
 
   function validateForm() {
     const newErrors: { label?: string } = {};
-    if (!form.label.trim()) newErrors.label = "Nom obligatoire";
+    if (!form.label.trim()) newErrors.label = "Le nom du voyage est obligatoire";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   }
@@ -146,10 +167,7 @@ function FormVoyagePage() {
     e.preventDefault();
     if (!validateForm()) return;
 
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
+    const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
 
     if (mode === "add") {
@@ -174,97 +192,76 @@ function FormVoyagePage() {
 
       if (selectedTags.length > 0) {
         await supabase.from("Tags_voyage").insert(
-          selectedTags.map((tagId) => ({
-            tag_id: tagId,
-            voyage_id: Number(id),
-          }))
+          selectedTags.map((tagId) => ({ tag_id: tagId, voyage_id: Number(id) }))
         );
+      }
+
+      if (selectedMainMedia !== null) {
+
+        await supabase.from("Medias").update({ isMain: false }).eq("voyage_id", Number(id));
+
+        await supabase.from("Medias").update({ isMain: true }).eq("id", selectedMainMedia);
       }
 
       navigate(`/voyages/${id}/edit`);
     }
   }
 
+  async function deleteEtape(etapeId: number) {
+    const confirmDelete = window.confirm("Supprimer cette étape ?");
+    if (!confirmDelete) return;
+
+    const { error } = await supabase.from("Etapes").delete().eq("id", etapeId);
+    if (!error) loadEtapes(searchEtape);
+  }
+
   return (
     <div className="form-voyages-page">
       <Header />
-
       <main>
         <div className="content card card-travel card-form">
           <h3>{mode === "add" ? "Créer un voyage" : "Modifier un voyage"}</h3>
 
           <form onSubmit={handleSubmit}>
-            <label>
-              Nom *
-              <input name="label" value={form.label} onChange={handleChange} />
+            <label className="label-column">
+              Nom du voyage
+              <input type="text" name="label" value={form.label} onChange={handleChange} required />
               {errors.label && <p className="error">{errors.label}</p>}
             </label>
 
-            <label>
+            <label className="label-column">
               Régions
-              <input
-                name="regions"
-                value={form.regions?.join(", ") || ""}
-                onChange={handleChange}
-              />
+              <input type="text" name="regions" value={form.regions?.join(", ") || ""} onChange={handleChange} />
             </label>
 
-            <label>
+            <label className="label-column">
               Pays
-              <input
-                name="pays"
-                value={form.pays?.join(", ") || ""}
-                onChange={handleChange}
-              />
+              <input type="text" name="pays" value={form.pays?.join(", ") || ""} onChange={handleChange} />
             </label>
 
-            <label>
+            <label className="label-column">
               Villes
-              <input
-                name="villes"
-                value={form.villes?.join(", ") || ""}
-                onChange={handleChange}
-              />
+              <input type="text" name="villes" value={form.villes?.join(", ") || ""} onChange={handleChange} />
             </label>
 
-            <label>
-              Date départ
-              <input
-                type="date"
-                name="date_depart"
-                value={form.date_depart || ""}
-                onChange={handleChange}
-              />
+            <label className="label-column">
+              Date de départ
+              <input type="date" name="date_depart" value={form.date_depart || ""} onChange={handleChange} />
             </label>
 
-            <label>
-              Date arrivée
-              <input
-                type="date"
-                name="date_arrivee"
-                value={form.date_arrivee || ""}
-                onChange={handleChange}
-              />
+            <label className="label-column">
+              Date d'arrivée
+              <input type="date" name="date_arrivee" value={form.date_arrivee || ""} onChange={handleChange} />
             </label>
 
-            <label>
+            <label className="label-column">
               Budget
-              <input
-                type="number"
-                name="budget"
-                value={form.budget ?? ""}
-                onChange={handleChange}
-              />
+              <input type="number" name="budget" value={form.budget ?? ""} onChange={handleChange} />
             </label>
 
-            <label>
+            <label className="label-column">
               Dépenses
-              <input
-                type="number"
-                name="depenses"
-                value={form.depenses ?? ""}
-                onChange={handleChange}
-              />
+              <input type="number" name="depenses" value={form.depenses ?? ""} onChange={handleChange} />
             </label>
 
             {mode === "update" && (
@@ -282,20 +279,78 @@ function FormVoyagePage() {
                     </label>
                   ))}
                 </div>
+
+                <h4>Médias du voyage</h4>
+                <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 16 }}>
+                  {medias.map((media) => (
+                    <div key={media.id} style={{ textAlign: "center" }}>
+                      <img
+                        src={media.url}
+                        alt={media.nom}
+                        title={media.nom}
+                        style={{
+                          width: 120,
+                          height: 120,
+                          objectFit: "cover",
+                          borderRadius: 8,
+                          border: media.id === selectedMainMedia ? "3px solid green" : "1px solid #ccc",
+                          cursor: "pointer",
+                        }}
+                        onClick={() => setSelectedMainMedia(media.id)}
+                      />
+                      <p>{media.nom}</p>
+                    </div>
+                  ))}
+                </div>
               </>
             )}
 
-            <button className="cta" type="submit">
-              {mode === "add" ? "Créer" : "Mettre à jour"}
-            </button>
+            <button className="cta" type="submit">{mode === "add" ? "Créer" : "Mettre à jour"}</button>
           </form>
+
+          {id && (
+            <>
+              <h2>Étapes</h2>
+
+              <input
+                type="text"
+                placeholder="Rechercher une étape"
+                value={searchEtape}
+                onChange={(e) => setSearchEtape(e.target.value)}
+              />
+
+              <button onClick={() => navigate(`/voyages/${id}/etapes/new`)}>
+                Ajouter une étape
+                <img className="cta-icon" src="./src/assets/images/add.svg" alt="" />
+              </button>
+
+              <ul className="content card-travel-preview">
+                {etapes.map((etape) => (
+                  <li className="content card-travel-preview-content" key={etape.id}>
+                    <strong>{etape.label}</strong>
+
+                    <footer className="card-footer">
+                      <button onClick={() => navigate(`/voyages/${id}/etapes/${etape.id}`)}>
+                        Détails
+                      </button>
+                      <button className="cta" onClick={() => navigate(`/voyages/${id}/etapes/${etape.id}/edit`)}>
+                        Modifier
+                      </button>
+                      <button className="cta" onClick={() => deleteEtape(etape.id)}>
+                        Supprimer
+                        <img className="cta-icon" src="./src/assets/images/close.svg" alt="" />
+                      </button>
+                    </footer>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
         </div>
       </main>
-
       <Footer />
     </div>
   );
 }
 
 export default FormVoyagePage;
-

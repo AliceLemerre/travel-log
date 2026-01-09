@@ -22,9 +22,17 @@ interface Tag {
   titre: string;
 }
 
+interface Media {
+  id: number;
+  url: string;
+  isMain: boolean | null;
+  nom: string;
+}
+
 function ListVoyagePage() {
   const [voyages, setVoyages] = useState<Voyage[]>([]);
   const [tagsMap, setTagsMap] = useState<Record<number, Tag[]>>({});
+  const [mediasMap, setMediasMap] = useState<Record<number, Media | null>>({});
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [filterStart, setFilterStart] = useState<string | null>(null);
@@ -67,7 +75,6 @@ function ListVoyagePage() {
     if (error) console.error("Erreur", error);
     else setVoyages(data || []);
 
-    // charger les tags pour tous les voyages récupérés
     if (data && data.length > 0) {
       const voyageIds = data.map(v => v.id);
       const { data: tagsData } = await supabase
@@ -81,8 +88,22 @@ function ListVoyagePage() {
         if (t.Tags) map[t.voyage_id].push(t.Tags);
       });
       setTagsMap(map);
+
+      const { data: mediasData } = await supabase
+        .from("Medias")
+        .select("*")
+        .in("voyage_id", voyageIds)
+        .eq("isMain", true);
+
+      const mediaMap: Record<number, Media | null> = {};
+      voyageIds.forEach((id) => {
+        mediaMap[id] = mediasData?.find((m: any) => m.voyage_id === id) || null;
+      });
+      setMediasMap(mediaMap);
+
     } else {
       setTagsMap({});
+      setMediasMap({});
     }
 
     setLoading(false);
@@ -212,6 +233,18 @@ function ListVoyagePage() {
           <ul className="content card-travel-preview">
             {voyages.map((voyage) => (
               <li key={voyage.id} className="card-travel-preview-content">
+
+                {/* affichage de l'image principale */}
+                {mediasMap[voyage.id] && mediasMap[voyage.id]?.url && (
+                  <div style={{ textAlign: "center", marginBottom: 8 }}>
+                    <img
+                      src={mediasMap[voyage.id]?.url}
+                      alt={mediasMap[voyage.id]?.nom}
+                      style={{ width: "100%", maxHeight: 200, objectFit: "cover", borderRadius: 8 }}
+                    />
+                  </div>
+                )}
+
                 <h4>{voyage.label}</h4>
                 {(voyage.date_depart || voyage.date_arrivee) && (
                   <span>
