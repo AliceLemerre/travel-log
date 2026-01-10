@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "../../../lib/supabaseClient";
 import Header from "../../../components/header/Header";
 import Footer from "../../../components/footer/Footer";
+import './FormVoyages.css'
 
 interface Voyage {
   label: string;
@@ -166,7 +167,7 @@ function FormVoyagePage() {
             {mode === "add" ? "Créer un voyage" : "Modifier un voyage"}
           </h3>
 
-          <form onSubmit={handleSubmit}>
+          <form className="card-travel-create" onSubmit={handleSubmit}>
             <label className="label-column">
               Nom du voyage
               <input type="text" name="label" value={form.label} onChange={handleChange} required />
@@ -210,7 +211,7 @@ function FormVoyagePage() {
               <input type="number" name="depenses" value={form.depenses ?? ""} onChange={handleChange} />
             </label>
 
-            <button type="submit">{mode === "add" ? "Créer" : "Mettre à jour"}</button>
+            <button className="cta" type="submit">{mode === "add" ? "Créer" : "Mettre à jour"}</button>
           </form>
 
           {id && (
@@ -224,9 +225,9 @@ function FormVoyagePage() {
                 onChange={(e) => setSearchEtape(e.target.value)}
               />
 
-              <button onClick={() => navigate(`/voyages/${id}/etapes/new`)}>
+              <button className="cta" onClick={() => navigate(`/voyages/${id}/etapes/new`)}>
                 Ajouter une étape
-                <img className="cta-icon" src="./src/assets/images/add.svg" alt="" />
+                {/* <img className="cta-icon" src="./src/assets/images/add.svg" alt="" /> */}
               </button>
 
               <ul className="content card-travel-preview">
@@ -236,6 +237,7 @@ function FormVoyagePage() {
 
                   <footer className="card-footer">
                     <button
+                      className="cta"
                       onClick={() =>
                         navigate(
                           `/voyages/${id}/etapes/${etape.id}`
@@ -254,9 +256,9 @@ function FormVoyagePage() {
                     >
                       Modifier
                     </button>
-                    <button className="cta" onClick={() => deleteEtape(etape.id)}>
+                    <button className="cta cta-danger" onClick={() => deleteEtape(etape.id)}>
                       Supprimer
-                      <img className="cta-icon" src="./src/assets/images/close.svg" alt="" />
+                      {/* <img className="cta cta-icon" src="./src/assets/images/close.svg" alt="" /> */}
                     </button>
                   </footer>
                     <br />

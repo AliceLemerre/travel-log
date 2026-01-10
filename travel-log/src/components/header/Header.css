@@ -7,12 +7,6 @@
   will-change: filter;
   transition: filter 300ms;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
 
 @keyframes logo-spin {
   from {
@@ -30,8 +24,8 @@
 }
 
 .header{
-  background-image: url('../../assets/images/Nice-capitale.jpg');
-  background-position: top right;
+  background-image: url('../../assets/images/a239f3a0da0899f79c2bf9fc6c0872ef.jpg');
+  background-position: top;
   background-size: cover;
   background-repeat: no-repeat;
   height: 16rem;
@@ -61,7 +55,7 @@ h2{
 @media screen and (min-width:650px){
 .header{
   height: 20rem;
-  background-position: center;
+  background-position: 0 20%;
 }
 
 }

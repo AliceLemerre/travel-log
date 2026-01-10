@@ -169,10 +169,10 @@ function EtapeFormPage() {
 
       <main>
         <div className="content card card-travel card-form">
-          <h1>{mode === "add" ? "Ajouter une étape" : "Modifier une étape"}</h1>
+          <h3>{mode === "add" ? "Ajouter une étape" : "Modifier une étape"}</h3>
 
           <button
-            className="cta cta-icon"
+            className="cta cta-round"
             onClick={() => navigate(`/voyages/${voyageId}/edit`)}
           >
             ←
@@ -247,7 +247,7 @@ function EtapeFormPage() {
           {}
           {etapeId && (
             <>
-              <h2>Médias</h2>
+              <h4>Médias</h4>
 
               <input
                 type="file"
@@ -271,7 +271,7 @@ function EtapeFormPage() {
                       }}
                     />
                     <br />
-                    <button onClick={() => handleDeleteMedia(media.id)}>
+                    <button className="cta cta-danger" onClick={() => handleDeleteMedia(media.id)}>
                       Supprimer
                     </button>
                   </div>

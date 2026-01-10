@@ -121,7 +121,7 @@ border-radius: 8px;
 
 .card-date{
   padding: 0.3rem 0.8rem;
-  background-color: var(--light-blue);
+  /* background-color: var(--light-blue); */
   border-radius: 100px;
 }
 
@@ -139,7 +139,7 @@ border-radius: 8px;
 .card-form label{
   display: flex;
   flex-direction: column;
-  flex: 0 1;
+  /* flex: 0 1; */
 }
 
 .card-form input, .filters input{
@@ -197,7 +197,7 @@ border-radius: 8px;
 
   .card-travel {
   align-items: flex-start;
-    max-width: 1000px;
+    max-width: 900px;
 
   }
 

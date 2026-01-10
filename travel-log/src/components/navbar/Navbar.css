@@ -101,19 +101,24 @@
   justify-content: flex-start;
   padding-left: 50px;
   transition: transform 0.5s ease-in-out;
-  text-align: center;
+  text-align: right;
   background-color: var(--dark-grey);
   position: absolute;
   top: 0;
   right: 0;
 }
 
-.navbar .menu-items a {
+.navbar .menu-items a, .menu-items label {
   margin-bottom: 1.2rem;
   font-size: 1.5rem;
   font-weight: 500;
 }
 
+.account-menu{
+  padding: 1rem;
+  background-color: var(--grey);
+  border-radius: 0.2rem;
+}
 
 .navbar-container input[type="checkbox"]:checked ~ .menu-items {
   transform: translateX(0%);
@@ -185,15 +190,18 @@
 
   .navbar{
     width: 100%;
-    position: unset;
+    position: relative;
+    z-index: 1000;
     top: 0;
     left: 0;
     background-color: transparent;
   }
 
-  .menu-items a{
+  .navbar .menu-items a{
     color: var(--header-font);
+    font-size: 1.1rem;
   }
+
 
   .menu-items {
     padding: 0;
@@ -205,11 +213,29 @@
     justify-content: center;
     align-items: flex-start;
     padding-left: 0px;
-    text-align: center;
     background-color: transparent;
     position: unset;
     top: 0;
     right: 0;
+    gap: 3rem;
   }
+
+  .account-menu{
+  flex-direction: column;
+  z-index: 999;
+  position: absolute ;
+  right: 0;
+  width: 10rem;
+  top: 2rem;
+}
+
+.nav-dropdown{
+  position: relative;
+}
+
+.navbar .logout{
+  margin-top: -0.45em;
+}
+
 
 }

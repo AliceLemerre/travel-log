@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
+import './Auth.css';
 
 function isValidEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -55,7 +56,7 @@ export default function LoginPage() {
       {errorMsg && <p style={{ color: "red" }}>{errorMsg}</p>}
 
       <form onSubmit={handleSubmit} noValidate>
-        <label>
+        <label className="label-column">
           Email
           <input
             type="email"
@@ -74,24 +75,24 @@ export default function LoginPage() {
               required
               onChange={(e) => setPassword(e.target.value)}
             />
-            <button type="button" onClick={() => setShowPassword(v => !v)}>
+            <button className="cta" type="button" onClick={() => setShowPassword(v => !v)}>
               {showPassword ? "Masquer" : "Voir"}
             </button>
           </div>
         </label>
 
-        <button type="submit" disabled={loading}>
+        <button className="cta" type="submit" disabled={loading}>
           {loading ? "Connexion..." : "Se connecter"}
         </button>
       </form>
 
       <hr />
 
-      <button onClick={() => loginWithOAuth("google")}>
+      <button className="cta" onClick={() => loginWithOAuth("google")}>
         Continuer avec Google
       </button>
 
-      <button onClick={() => loginWithOAuth("github")}>
+      <button className="cta" onClick={() => loginWithOAuth("github")}>
         Continuer avec GitHub
       </button>
 

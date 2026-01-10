@@ -1,0 +1,18 @@
+.card-travel-top{
+    width: 100%;
+}
+
+
+.travel-photos-container{
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.travel-photos-container img{
+    width: 15rem;
+    height:15rem;
+    object-fit: cover;
+    border-radius: 0.5rem;
+    cursor: pointer;
+}

@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "../../../lib/supabaseClient";
 import Header from "../../../components/header/Header";
 import Footer from "../../../components/footer/Footer";
+import './InfoVoyage.css';
 
 interface Voyage {
   id: number;
@@ -86,7 +87,7 @@ function InfoVoyagePage() {
         <div className="content card card-travel">
           <div className="card-travel-top">
             <header className="card-header">
-              <button className="cta cta-icon" onClick={() => navigate("/voyages")}>
+              <button className="cta cta-round" onClick={() => navigate("/voyages")}>
                 ←
               </button>
 
@@ -98,7 +99,7 @@ function InfoVoyagePage() {
               </button>
             </header>
 
-            <h2>{voyage.label}</h2>
+            <h3>{voyage.label}</h3>
 
             {(voyage.date_depart || voyage.date_arrivee) && (
               <p className="card-dates">
@@ -126,16 +127,9 @@ function InfoVoyagePage() {
           {}
           {medias.length > 0 && (
             <div style={{ marginTop: 24 }}>
-              <h2>Médias du voyage</h2>
+              <h3>Médias du voyage</h3>
 
-              <div
-                style={{
-                  display: "flex",
-                  gap: 12,
-                  flexWrap: "wrap",
-                  marginTop: 10,
-                }}
-              >
+              <div className="travel-photos-container" >
                 {medias.map((media) => (
                   <div key={media.id} style={{ textAlign: "center" }}>
                     <img
@@ -144,11 +138,7 @@ function InfoVoyagePage() {
                       title={media.nom}
                       onClick={() => setSelectedMedia(media)}
                       style={{
-                        width: 160,
-                        height: 160,
-                        objectFit: "cover",
-                        borderRadius: 8,
-                        cursor: "pointer",
+                       
                       }}
                     />
 
@@ -168,7 +158,7 @@ function InfoVoyagePage() {
 
           {}
           <div className="steps-section">
-            <h2>Étapes</h2>
+            <h3>Étapes</h3>
 
             {etapes.length === 0 && <p>Aucune étape enregistrée.</p>}
 
