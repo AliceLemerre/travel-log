@@ -56,7 +56,9 @@ export default function Navbar({ isOpen, onToggle }: NavbarProps) {
 
               {showMenu && (
                 <div className="account-menu nav-links">
-                  <a className="menu-item nav-link">Liste des Tags</a>
+                  <Link to="/tags">
+                    <a className="menu-item nav-link">Liste des Tags</a>
+                  </Link>
                   <a className="menu-item nav-link">Mon Profil</a>
                   <input type="checkbox" id="dark-mode-toggle"></input>
                   <label htmlFor="dark-mode-toggle" className="toggle"></label>

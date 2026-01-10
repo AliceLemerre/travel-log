@@ -26,6 +26,11 @@ interface Media {
   url: string;
 }
 
+interface Tag {
+  id: number;
+  titre: string;
+}
+
 function EtapeFormPage() {
   const { voyageId, etapeId } = useParams();
   const navigate = useNavigate();
@@ -42,35 +47,39 @@ function EtapeFormPage() {
   });
 
   const [errors, setErrors] = useState<{ label?: string }>({});
-
   const [medias, setMedias] = useState<Media[]>([]);
   const [uploading, setUploading] = useState(false);
+
+  const [allTags, setAllTags] = useState<Tag[]>([]);
+  const [selectedTagIds, setSelectedTagIds] = useState<number[]>([]);
 
   useEffect(() => {
     if (!etapeId) return;
 
-    async function loadEtape() {
-      const { data } = await supabase
-        .from("Etapes")
-        .select("*")
-        .eq("id", etapeId)
-        .single();
-
-      if (data) {
-        setForm({
-          label: data.label,
-          adresse: data.adresse,
-          pays: data.pays,
-          region: data.region,
-          notes: data.notes,
-          depenses: data.depenses,
-        });
-      }
-    }
-
     loadEtape();
     loadMedias();
+    loadTags();
+    loadEtapeTags();
   }, [etapeId]);
+
+  async function loadEtape() {
+    const { data } = await supabase
+      .from("Etapes")
+      .select("*")
+      .eq("id", etapeId)
+      .single();
+
+    if (data) {
+      setForm({
+        label: data.label,
+        adresse: data.adresse,
+        pays: data.pays,
+        region: data.region,
+        notes: data.notes,
+        depenses: data.depenses,
+      });
+    }
+  }
 
   async function loadMedias() {
     if (!etapeId) return;
@@ -78,13 +87,31 @@ function EtapeFormPage() {
     setMedias(data || []);
   }
 
+  async function loadTags() {
+    const { data } = await supabase
+      .from("Tags")
+      .select("*")
+      .order("titre", { ascending: true });
+
+    setAllTags(data || []);
+  }
+
+  async function loadEtapeTags() {
+    if (!etapeId) return;
+
+    const { data } = await supabase
+      .from("Tags_etapes")
+      .select("tag_id")
+      .eq("etape_id", etapeId);
+
+    setSelectedTagIds(data?.map((t) => t.tag_id) || []);
+  }
+
   function validateForm() {
     const newErrors: { label?: string } = {};
-
     if (!form.label.trim()) {
       newErrors.label = "Le nom de l’étape est obligatoire";
     }
-
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   }
@@ -96,33 +123,33 @@ function EtapeFormPage() {
     setForm((f) => ({ ...f, [name]: value }));
   }
 
+  function toggleTag(tagId: number) {
+    setSelectedTagIds((prev) =>
+      prev.includes(tagId)
+        ? prev.filter((id) => id !== tagId)
+        : [...prev, tagId]
+    );
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!validateForm()) return;
 
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) return;
-
-    if (mode === "add") {
-      const { error } = await supabase.from("Etapes").insert({
-        ...form,
-        voyage_id: voyageId,
-        user_id: user.id,
-      });
-
-      if (!error) navigate(`/voyages/${voyageId}/edit`);
-    }
-
     if (mode === "update") {
-      const { error } = await supabase
-        .from("Etapes")
-        .update(form)
-        .eq("id", etapeId);
+      await supabase.from("Etapes").update(form).eq("id", etapeId);
 
-      if (!error) navigate(`/voyages/${voyageId}/edit`);
+      await supabase.from("Tags_etapes").delete().eq("etape_id", etapeId);
+
+      if (selectedTagIds.length > 0) {
+        const rows = selectedTagIds.map((tagId) => ({
+          tag_id: tagId,
+          etape_id: Number(etapeId),
+        }));
+
+        await supabase.from("Tags_etapes").insert(rows);
+      }
+
+      navigate(`/voyages/${voyageId}/edit`);
     }
   }
 
@@ -132,15 +159,12 @@ function EtapeFormPage() {
     if (!e.target.files || !e.target.files[0] || !etapeId) return;
 
     const file = e.target.files[0];
-
     const {
       data: { user },
     } = await supabase.auth.getUser();
-
     if (!user) return;
 
     setUploading(true);
-
     const base64 = await fileToBase64(file);
 
     await addMedia({
@@ -156,9 +180,7 @@ function EtapeFormPage() {
   }
 
   async function handleDeleteMedia(mediaId: number) {
-    const confirmDelete = window.confirm("Supprimer ce média ?");
-    if (!confirmDelete) return;
-
+    if (!window.confirm("Supprimer ce média ?")) return;
     await deleteMedia(mediaId);
     loadMedias();
   }
@@ -169,7 +191,7 @@ function EtapeFormPage() {
 
       <main>
         <div className="content card card-travel card-form">
-          <h3>{mode === "add" ? "Ajouter une étape" : "Modifier une étape"}</h3>
+          <h3>Modifier une étape</h3>
 
           <button
             className="cta cta-round"
@@ -190,57 +212,46 @@ function EtapeFormPage() {
               {errors.label && <p className="error">{errors.label}</p>}
             </label>
 
-            <label>
-              Adresse
-              <input
-                type="text"
-                name="adresse"
-                value={form.adresse || ""}
-                onChange={handleChange}
-              />
+            <label>Adresse
+              <input name="adresse" value={form.adresse || ""} onChange={handleChange} />
             </label>
 
-            <label>
-              Pays
-              <input
-                type="text"
-                name="pays"
-                value={form.pays || ""}
-                onChange={handleChange}
-              />
+            <label>Pays
+              <input name="pays" value={form.pays || ""} onChange={handleChange} />
             </label>
 
-            <label>
-              Région
-              <input
-                type="text"
-                name="region"
-                value={form.region || ""}
-                onChange={handleChange}
-              />
+            <label>Région
+              <input name="region" value={form.region || ""} onChange={handleChange} />
             </label>
 
-            <label>
-              Notes
-              <textarea
-                name="notes"
-                value={form.notes || ""}
-                onChange={handleChange}
-              />
+            <label>Notes
+              <textarea name="notes" value={form.notes || ""} onChange={handleChange} />
             </label>
 
-            <label>
-              Dépenses (€)
-              <input
-                type="number"
-                name="depenses"
-                value={form.depenses ?? ""}
-                onChange={handleChange}
-              />
+            <label>Dépenses (€)
+              <input type="number" name="depenses" value={form.depenses ?? ""} onChange={handleChange} />
             </label>
+
+            {}
+            <h2>Tags</h2>
+
+            {allTags.length === 0 && <p>Aucun tag existant.</p>}
+
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
+              {allTags.map((tag) => (
+                <label key={tag.id} style={{ display: "flex", gap: 6 }}>
+                  <input
+                    type="checkbox"
+                    checked={selectedTagIds.includes(tag.id)}
+                    onChange={() => toggleTag(tag.id)}
+                  />
+                  {tag.titre}
+                </label>
+              ))}
+            </div>
 
             <button className="cta" type="submit">
-              {mode === "add" ? "Créer" : "Mettre à jour"}
+              Mettre à jour
             </button>
           </form>
 
@@ -249,14 +260,8 @@ function EtapeFormPage() {
             <>
               <h4>Médias</h4>
 
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleUploadMedia}
-                disabled={uploading}
-              />
-
-              {uploading && <p>Upload en cours...</p>}
+          <input type="file" accept="image/*" onChange={handleUploadMedia} />
+          {uploading && <p>Upload en cours...</p>}
 
               <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
                 {medias.map((media) => (
@@ -288,3 +293,4 @@ function EtapeFormPage() {
 }
 
 export default EtapeFormPage;
+

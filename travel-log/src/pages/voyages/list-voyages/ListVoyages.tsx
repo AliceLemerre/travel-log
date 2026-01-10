@@ -17,8 +17,22 @@ interface Voyage {
   depenses: number | null;
 }
 
+interface Tag {
+  id: number;
+  titre: string;
+}
+
+interface Media {
+  id: number;
+  url: string;
+  isMain: boolean | null;
+  nom: string;
+}
+
 function ListVoyagePage() {
   const [voyages, setVoyages] = useState<Voyage[]>([]);
+  const [tagsMap, setTagsMap] = useState<Record<number, Tag[]>>({});
+  const [mediasMap, setMediasMap] = useState<Record<number, Media | null>>({});
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [filterStart, setFilterStart] = useState<string | null>(null);
@@ -60,6 +74,37 @@ function ListVoyagePage() {
 
     if (error) console.error("Erreur", error);
     else setVoyages(data || []);
+
+    if (data && data.length > 0) {
+      const voyageIds = data.map(v => v.id);
+      const { data: tagsData } = await supabase
+        .from("Tags_voyage")
+        .select("voyage_id, Tags(id, titre)")
+        .in("voyage_id", voyageIds);
+
+      const map: Record<number, Tag[]> = {};
+      tagsData?.forEach((t: any) => {
+        if (!map[t.voyage_id]) map[t.voyage_id] = [];
+        if (t.Tags) map[t.voyage_id].push(t.Tags);
+      });
+      setTagsMap(map);
+
+      const { data: mediasData } = await supabase
+        .from("Medias")
+        .select("*")
+        .in("voyage_id", voyageIds)
+        .eq("isMain", true);
+
+      const mediaMap: Record<number, Media | null> = {};
+      voyageIds.forEach((id) => {
+        mediaMap[id] = mediasData?.find((m: any) => m.voyage_id === id) || null;
+      });
+      setMediasMap(mediaMap);
+
+    } else {
+      setTagsMap({});
+      setMediasMap({});
+    }
 
     setLoading(false);
   }
@@ -176,7 +221,6 @@ function ListVoyagePage() {
 
             <button className="filter-cta" onClick={resetFilters} style={{ marginLeft: "8px" }}>
               Réinitialiser les filtres
-              {/* <img className="cta-icon filter-icon icon-unset" src="./src/assets/images/add.svg" alt="" /> */}
             </button>
           </div>
           </section>
@@ -189,6 +233,18 @@ function ListVoyagePage() {
           <ul className="content card-travel-preview">
             {voyages.map((voyage) => (
               <li key={voyage.id} className="card-travel-preview-content">
+
+                {/* affichage de l'image principale */}
+                {mediasMap[voyage.id] && mediasMap[voyage.id]?.url && (
+                  <div style={{ textAlign: "center", marginBottom: 8 }}>
+                    <img
+                      src={mediasMap[voyage.id]?.url}
+                      alt={mediasMap[voyage.id]?.nom}
+                      style={{ width: "100%", maxHeight: 200, objectFit: "cover", borderRadius: 8 }}
+                    />
+                  </div>
+                )}
+
                 <h4>{voyage.label}</h4>
                 {(voyage.date_depart || voyage.date_arrivee) && (
                   <span>
@@ -197,6 +253,17 @@ function ListVoyagePage() {
                 )}
                 <br /><br />
 
+                {/* affichage des tags */}
+                {tagsMap[voyage.id] && tagsMap[voyage.id].length > 0 && (
+                  <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 8 }}>
+                    {tagsMap[voyage.id].map(tag => (
+                      <span key={tag.id} style={{ padding: "2px 8px", background: "#eee", borderRadius: 12, fontSize: 12 }}>
+                        {tag.titre}
+                      </span>
+                    ))}
+                  </div>
+                )}
+
                 <footer className="card-footer">
 
                   <button
@@ -204,14 +271,12 @@ function ListVoyagePage() {
                     onClick={() => navigate(`/voyages/${voyage.id}`)}
                   >
                     Détails
-                    {/* <img className="cta-icon" src="./src/assets/images/eye.svg" alt="" /> */}
                   </button>
                   <button 
                     className="cta"
                     onClick={() => navigate(`/voyages/${voyage.id}/edit`)}
                   >
                     Modifier
-                    {/* <img className="cta-icon" src="./src/assets/images/edit.svg" alt="" /> */}
                   </button>
 
                   <button
@@ -219,7 +284,6 @@ function ListVoyagePage() {
                     onClick={() => deleteVoyage(voyage.id)}
                   >
                     Supprimer
-                    {/* <img className="cta-icon icon-unset" src="./src/assets/images/add.svg" alt="" /> */}
                   </button>
                 </footer>
               </li>

@@ -31,6 +31,12 @@ interface Media {
   id: number;
   nom: string;
   url: string;
+  isMain: boolean | null;
+}
+
+interface Tag {
+  id: number;
+  titre: string;
 }
 
 function InfoVoyagePage() {
@@ -40,7 +46,9 @@ function InfoVoyagePage() {
   const [voyage, setVoyage] = useState<Voyage | null>(null);
   const [etapes, setEtapes] = useState<Etape[]>([]);
   const [medias, setMedias] = useState<Media[]>([]);
+  const [tags, setTags] = useState<Tag[]>([]);
   const [selectedMedia, setSelectedMedia] = useState<Media | null>(null);
+  const [mainMedia, setMainMedia] = useState<Media | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -67,9 +75,19 @@ function InfoVoyagePage() {
         .eq("voyage_id", id)
         .order("created_at", { ascending: true });
 
+      const { data: tagsData } = await supabase
+        .from("Tags_voyage")
+        .select("Tags(id, titre)")
+        .eq("voyage_id", id);
+
       setVoyage(voyageData || null);
       setEtapes(etapesData || []);
       setMedias(mediasData || []);
+      setTags(tagsData?.map((t: any) => t.Tags).filter(Boolean) || []);
+
+      const main = mediasData?.find((m) => m.isMain) || null;
+      setMainMedia(main);
+
       setLoading(false);
     }
 
@@ -101,6 +119,24 @@ function InfoVoyagePage() {
 
             <h3>{voyage.label}</h3>
 
+            {}
+            {mainMedia && (
+              <div style={{ marginTop: 12, textAlign: "center" }}>
+                <img
+                  src={mainMedia.url}
+                  alt={mainMedia.nom}
+                  style={{
+                    width: "100%",
+                    maxHeight: 400,
+                    objectFit: "cover",
+                    borderRadius: 12,
+                  }}
+                  onClick={() => setSelectedMedia(mainMedia)}
+                />
+                <p style={{ marginTop: 6 }}>{mainMedia.nom}</p>
+              </div>
+            )}
+
             {(voyage.date_depart || voyage.date_arrivee) && (
               <p className="card-dates">
                 <span className="card-date">{voyage.date_depart ?? ""}</span>
@@ -122,6 +158,28 @@ function InfoVoyagePage() {
             <p>
               <strong>Dépenses :</strong> {voyage.depenses ?? "0"} €
             </p>
+
+            {}
+            {tags.length > 0 && (
+              <div style={{ marginTop: 12 }}>
+                <strong>Tags :</strong>
+                <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 6 }}>
+                  {tags.map((tag) => (
+                    <span
+                      key={tag.id}
+                      style={{
+                        padding: "4px 10px",
+                        background: "#eee",
+                        borderRadius: 16,
+                        fontSize: 13,
+                      }}
+                    >
+                      {tag.titre}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
           {}
@@ -135,13 +193,12 @@ function InfoVoyagePage() {
                     <img
                       src={media.url}
                       alt={media.nom}
-                      title={media.nom}
                       onClick={() => setSelectedMedia(media)}
                       style={{
-                       
+                        border: media.isMain ? "3px solid green" : "1px solid #ccc",
                       }}
                     />
-
+                    <p>{media.nom}</p>
                     <a
                       href={media.url}
                       download={media.nom}
@@ -164,7 +221,7 @@ function InfoVoyagePage() {
 
             <ul className="content card-travel-preview">
               {etapes.map((etape) => (
-                <li className="content card-travel-preview-content" key={etape.id}>
+                <li key={etape.id} className="content card-travel-preview-content">
                   <strong>{etape.label}</strong>
                   {etape.pays && <span> – {etape.pays}</span>}
 
@@ -211,11 +268,7 @@ function InfoVoyagePage() {
           <img
             src={selectedMedia.url}
             alt={selectedMedia.nom}
-            style={{
-              maxWidth: "90%",
-              maxHeight: "90%",
-              borderRadius: 12,
-            }}
+            style={{ maxWidth: "90%", maxHeight: "90%", borderRadius: 12 }}
           />
         </div>
       )}
