@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "../../../lib/supabaseClient";
 import Header from "../../../components/header/Header";
 import Footer from "../../../components/footer/Footer";
+import './InfoEtapes.css';
 
 interface Etape {
   id: number;
@@ -107,6 +108,12 @@ function EtapeDetailPage() {
 
       <main>
         <div className="content card card-travel">
+          <button
+            className="cta cta-round"
+            onClick={() => navigate(`/voyages/${voyageId}/edit`)}
+          >
+            ←
+          </button>
           <h3>{etape.label}</h3>
 
           {etape.adresse && <p><strong>Adresse :</strong> {etape.adresse}</p>}
@@ -171,7 +178,7 @@ function EtapeDetailPage() {
             </>
           )}
 
-          <div style={{ marginTop: 24 }}>
+          <div className="card-footer">
             <button
               className="cta"
               onClick={() =>
@@ -182,7 +189,7 @@ function EtapeDetailPage() {
             </button>
 
             <button
-              className="cta"
+              className="cta cta-danger"
               style={{ marginLeft: 8 }}
               onClick={() => navigate(`/voyages/${voyageId}/edit`)}
             >

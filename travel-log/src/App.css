@@ -76,7 +76,7 @@ main{
 
 :root {
   --light-grey: #000;
-  --dark-grey: #efefef;
+  --dark-grey: #eee;
   --grey: #dddddd;
   --blue: #602ca0;
   --dark-blue: #8577E6;
@@ -85,6 +85,7 @@ main{
   --light: #eeeeeec8;
   --background: #f2f8ff;
   --dark: #090809c8;
+  --white: #fff;
 }
 
 :has(#dark-mode-toggle:checked) {

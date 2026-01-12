@@ -110,30 +110,26 @@ function InfoVoyagePage() {
               </button>
 
               <button
-                className="cta card-header-cta"
+                className="cta cta-danger card-header-cta"
                 onClick={() => navigate(`/voyages/${voyage.id}/edit`)}
               >
                 Modifier
               </button>
             </header>
 
-            <h3>{voyage.label}</h3>
+            {/* <div className="image-filter"/> */}
 
             {}
             {mainMedia && (
-              <div style={{ marginTop: 12, textAlign: "center" }}>
+              <div className="main-media">
                 <img
                   src={mainMedia.url}
                   alt={mainMedia.nom}
-                  style={{
-                    width: "100%",
-                    maxHeight: 400,
-                    objectFit: "cover",
-                    borderRadius: 12,
-                  }}
                   onClick={() => setSelectedMedia(mainMedia)}
                 />
-                <p style={{ marginTop: 6 }}>{mainMedia.nom}</p>
+                <h3>{voyage.label}</h3>
+
+                {/* <p>{mainMedia.nom}</p> */}
               </div>
             )}
 
@@ -161,18 +157,12 @@ function InfoVoyagePage() {
 
             {}
             {tags.length > 0 && (
-              <div style={{ marginTop: 12 }}>
+              <div>
                 <strong>Tags :</strong>
-                <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 6 }}>
+                <div  className="tags-section">
                   {tags.map((tag) => (
                     <span
                       key={tag.id}
-                      style={{
-                        padding: "4px 10px",
-                        background: "#eee",
-                        borderRadius: 16,
-                        fontSize: 13,
-                      }}
                     >
                       {tag.titre}
                     </span>
@@ -184,12 +174,12 @@ function InfoVoyagePage() {
 
           {}
           {medias.length > 0 && (
-            <div style={{ marginTop: 24 }}>
+            <div>
               <h3>Médias du voyage</h3>
 
               <div className="travel-photos-container" >
                 {medias.map((media) => (
-                  <div key={media.id} style={{ textAlign: "center" }}>
+                  <div key={media.id} className="travel-photos-container-content">
                     <img
                       src={media.url}
                       alt={media.nom}
@@ -198,12 +188,11 @@ function InfoVoyagePage() {
                         border: media.isMain ? "3px solid green" : "1px solid #ccc",
                       }}
                     />
-                    <p>{media.nom}</p>
+                    {/* <p>{media.nom}</p> */}
                     <a
                       href={media.url}
                       download={media.nom}
                       className="cta"
-                      style={{ marginTop: 6, display: "inline-block" }}
                     >
                       Télécharger
                     </a>

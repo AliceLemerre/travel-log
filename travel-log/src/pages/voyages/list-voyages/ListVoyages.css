@@ -57,6 +57,7 @@ border-radius: 8px;
     border: 0.5px solid var(--grey);
     padding: 0.5rem;
     border-radius: 0.4rem;
+    width: 100%;
 }
 
 
@@ -146,7 +147,7 @@ border-radius: 8px;
   padding: 0.3rem 0.8rem;
   margin-top: 0.5rem;
   margin-top: 0.5rem;
-  background: var(--dark-grey);
+  background: var(--background);
   border-radius: 0.2rem;
   color: var(--light-grey)
 }
@@ -168,6 +169,13 @@ border-radius: 8px;
   flex-direction: column;
   align-items: flex-start;
   align-items: center;
+}
+
+.card-travel-preview-content img{
+  width: 100%; 
+  aspect-ratio: 1/1;
+  object-fit: cover; 
+  border-radius: 0.3rem;
 }
 
 .card-travel-preview{
@@ -201,20 +209,29 @@ border-radius: 8px;
 
   }
 
-    .card-travel-preview  {
+  .card-travel-preview  {
   flex-direction: row;
   flex-wrap: wrap;
-  max-width: 24rem;
+  align-items:  flex-start;
+  justify-content: center;
   }
 
 .card-travel-preview-content {
-  max-width: 24rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 100%;
-  }
+}
+
+.card-travel-preview-content{
+  max-width: 30%;
+}
+
+.card-travel-preview-content img{
+  aspect-ratio: 3/2;
+}
+
 
   .filters {
   flex-direction: row;
@@ -224,10 +241,6 @@ border-radius: 8px;
 
   .label-column {
   width: 1;
-  }
-  
-  .card-travel-preview-content {
-  max-width: 22rem;
   }
 
   .filters {

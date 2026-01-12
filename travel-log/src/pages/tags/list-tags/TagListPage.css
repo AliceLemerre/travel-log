@@ -1,0 +1,27 @@
+.tags-page input{
+    background-color: var(--background);
+    color: var(--light-grey);
+}
+
+.tags-page ul{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.5rem;
+
+}
+
+.card li {
+    display: flex;
+    padding: 1rem 0;
+    border-bottom: 0.25px solid black;
+    width: 100%;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+
+.tags-page .cta {
+margin-right: 0.5rem;
+}

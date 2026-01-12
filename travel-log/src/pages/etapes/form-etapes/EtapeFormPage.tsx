@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "../../../lib/supabaseClient";
 import Header from "../../../components/header/Header";
 import Footer from "../../../components/footer/Footer";
+import './EtapeFormPage.css';
 
 import {
   addMedia,
@@ -191,7 +192,7 @@ function EtapeFormPage() {
 
       <main>
         <div className="content card card-travel card-form">
-          <h3>Modifier une étape</h3>
+          <h3>Modifier l'étape</h3>
 
           <button
             className="cta cta-round"
@@ -237,9 +238,9 @@ function EtapeFormPage() {
 
             {allTags.length === 0 && <p>Aucun tag existant.</p>}
 
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
+            <div>
               {allTags.map((tag) => (
-                <label key={tag.id} style={{ display: "flex", gap: 6 }}>
+                <label key={tag.id}>
                   <input
                     type="checkbox"
                     checked={selectedTagIds.includes(tag.id)}
@@ -263,7 +264,7 @@ function EtapeFormPage() {
           <input type="file" accept="image/*" onChange={handleUploadMedia} />
           {uploading && <p>Upload en cours...</p>}
 
-              <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+              <div>
                 {medias.map((media) => (
                   <div key={media.id}>
                     <img
