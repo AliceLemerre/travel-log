@@ -38,22 +38,21 @@ export default function Navbar({ isOpen, onToggle }: NavbarProps) {
                 <a className="nav-link">Nouveau voyage</a>
               </Link>
             </>
+            
 
            
           )}
 
           {user ? (
             <>
+            <div className="nav-dropdown">
               <a
                 className="nav-link"
                 onClick={() => setShowMenu(!showMenu)}
               >
-                Mon Compte
+                Paramètres
               </a>
               
-              <input type="checkbox" id="dark-mode-toggle" />
-              <label htmlFor="dark-mode-toggle" className="toggle"></label>
-
 
               {showMenu && (
                 <div className="account-menu nav-links">
@@ -61,21 +60,24 @@ export default function Navbar({ isOpen, onToggle }: NavbarProps) {
                     <a className="menu-item nav-link">Liste des Tags</a>
                   </Link>
                   <a className="menu-item nav-link">Mon Profil</a>
-                  <button className="menu-item cta cta-danger logout" onClick={logout}>
-                    Déconnexion
-                  </button>
-
+                  <input type="checkbox" id="dark-mode-toggle"></input>
+                  <label htmlFor="dark-mode-toggle" className="toggle"></label>
                 </div>
               )}
+              </div>
+
+              <button className="menu-item cta cta-danger logout" onClick={logout}>
+                Déconnexion
+              </button>
             </>
           ) : (
             <>
               <Link to="/login">
-                <button className="nav-link">Connexion</button>
+                <button className="nav-link cta">Connexion</button>
               </Link>
 
               <Link to="/signup">
-                <button className="nav-link">Inscription</button>
+                <button className="nav-link cta">Inscription</button>
               </Link>
             </>
           )}

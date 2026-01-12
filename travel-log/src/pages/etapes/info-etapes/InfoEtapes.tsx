@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "../../../lib/supabaseClient";
 import Header from "../../../components/header/Header";
 import Footer from "../../../components/footer/Footer";
+import './InfoEtapes.css';
 
 interface Etape {
   id: number;
@@ -90,7 +91,7 @@ function EtapeDetailPage() {
         <main>
           <p>Étape introuvable</p>
           <button
-            className="cta cta-icon"
+            className="cta cta-round"
             onClick={() => navigate(`/voyages/${voyageId}/edit`)}
           >
             ←
@@ -107,7 +108,13 @@ function EtapeDetailPage() {
 
       <main>
         <div className="content card card-travel">
-          <h1>{etape.label}</h1>
+          <button
+            className="cta cta-round"
+            onClick={() => navigate(`/voyages/${voyageId}/edit`)}
+          >
+            ←
+          </button>
+          <h3>{etape.label}</h3>
 
           {etape.adresse && <p><strong>Adresse :</strong> {etape.adresse}</p>}
           {etape.pays && <p><strong>Pays :</strong> {etape.pays}</p>}
@@ -140,8 +147,9 @@ function EtapeDetailPage() {
 
           {medias.length > 0 && (
             <>
-              <h2>Médias</h2>
-              <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+              <h4>Médias</h4>
+
+              <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 10 }}>
                 {medias.map((media) => (
                   <div key={media.id} style={{ textAlign: "center" }}>
                     <img
@@ -170,7 +178,7 @@ function EtapeDetailPage() {
             </>
           )}
 
-          <div style={{ marginTop: 24 }}>
+          <div className="card-footer">
             <button
               className="cta"
               onClick={() =>
@@ -181,7 +189,7 @@ function EtapeDetailPage() {
             </button>
 
             <button
-              className="cta"
+              className="cta cta-danger"
               style={{ marginLeft: 8 }}
               onClick={() => navigate(`/voyages/${voyageId}/edit`)}
             >

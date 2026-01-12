@@ -1,0 +1,8 @@
+.etape-form-page main{
+    display: flex;
+}
+
+.card-form textarea{
+    background-color: var(--background);
+    color: var(--light-grey);
+}

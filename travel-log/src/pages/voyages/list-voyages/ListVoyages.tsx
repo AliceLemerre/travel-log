@@ -236,11 +236,10 @@ function ListVoyagePage() {
 
                 {/* affichage de l'image principale */}
                 {mediasMap[voyage.id] && mediasMap[voyage.id]?.url && (
-                  <div style={{ textAlign: "center", marginBottom: 8 }}>
+                  <div>
                     <img
                       src={mediasMap[voyage.id]?.url}
                       alt={mediasMap[voyage.id]?.nom}
-                      style={{ width: "100%", maxHeight: 200, objectFit: "cover", borderRadius: 8 }}
                     />
                   </div>
                 )}
@@ -255,7 +254,7 @@ function ListVoyagePage() {
 
                 {/* affichage des tags */}
                 {tagsMap[voyage.id] && tagsMap[voyage.id].length > 0 && (
-                  <div style={{ display: "flex", gap: 6, flexWrap: "wrap", marginBottom: 8 }}>
+                  <div>
                     {tagsMap[voyage.id].map(tag => (
                       <span key={tag.id} style={{ padding: "2px 8px", background: "#eee", borderRadius: 12, fontSize: 12 }}>
                         {tag.titre}

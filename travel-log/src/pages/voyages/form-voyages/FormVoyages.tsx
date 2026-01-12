@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "../../../lib/supabaseClient";
 import Header from "../../../components/header/Header";
 import Footer from "../../../components/footer/Footer";
+import './FormVoyages.css'
 
 interface Voyage {
   label: string;
@@ -222,7 +223,7 @@ function FormVoyagePage() {
         <div className="content card card-travel card-form">
           <h3>{mode === "add" ? "Créer un voyage" : "Modifier un voyage"}</h3>
 
-          <form onSubmit={handleSubmit}>
+          <form className="card-travel-create" onSubmit={handleSubmit}>
             <label className="label-column">
               Nom du voyage
               <input type="text" name="label" value={form.label} onChange={handleChange} required />
@@ -267,7 +268,7 @@ function FormVoyagePage() {
             {mode === "update" && (
               <>
                 <h4>Tags</h4>
-                <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+                <div className="tags-section">
                   {allTags.map((tag) => (
                     <label key={tag.id}>
                       <input
@@ -281,24 +282,19 @@ function FormVoyagePage() {
                 </div>
 
                 <h4>Médias du voyage</h4>
-                <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 16 }}>
+                <div className="medias-section">
                   {medias.map((media) => (
-                    <div key={media.id} style={{ textAlign: "center" }}>
+                    <div key={media.id}>
                       <img
                         src={media.url}
                         alt={media.nom}
                         title={media.nom}
                         style={{
-                          width: 120,
-                          height: 120,
-                          objectFit: "cover",
-                          borderRadius: 8,
                           border: media.id === selectedMainMedia ? "3px solid green" : "1px solid #ccc",
-                          cursor: "pointer",
                         }}
                         onClick={() => setSelectedMainMedia(media.id)}
                       />
-                      <p>{media.nom}</p>
+                      {/* <p>{media.nom}</p> */}
                     </div>
                   ))}
                 </div>
@@ -319,9 +315,9 @@ function FormVoyagePage() {
                 onChange={(e) => setSearchEtape(e.target.value)}
               />
 
-              <button onClick={() => navigate(`/voyages/${id}/etapes/new`)}>
+              <button className="cta" onClick={() => navigate(`/voyages/${id}/etapes/new`)}>
                 Ajouter une étape
-                <img className="cta-icon" src="./src/assets/images/add.svg" alt="" />
+                {/* <img className="cta-icon" src="./src/assets/images/add.svg" alt="" /> */}
               </button>
 
               <ul className="content card-travel-preview">
@@ -330,15 +326,15 @@ function FormVoyagePage() {
                     <strong>{etape.label}</strong>
 
                     <footer className="card-footer">
-                      <button onClick={() => navigate(`/voyages/${id}/etapes/${etape.id}`)}>
+                      <button className="cta" onClick={() => navigate(`/voyages/${id}/etapes/${etape.id}`)}>
                         Détails
                       </button>
                       <button className="cta" onClick={() => navigate(`/voyages/${id}/etapes/${etape.id}/edit`)}>
                         Modifier
                       </button>
-                      <button className="cta" onClick={() => deleteEtape(etape.id)}>
+                      <button className="cta cta-danger" onClick={() => deleteEtape(etape.id)}>
                         Supprimer
-                        <img className="cta-icon" src="./src/assets/images/close.svg" alt="" />
+                        {/* <img className="cta-icon" src="./src/assets/images/close.svg" alt="" /> */}
                       </button>
                     </footer>
                   </li>

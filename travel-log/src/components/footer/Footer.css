@@ -1,0 +1,5 @@
+.footer{
+    height: 3rem;
+    color: var(--light-grey);
+    background-color: var(--dark-grey);
+}

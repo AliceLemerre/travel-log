@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "../../../lib/supabaseClient";
 import Header from "../../../components/header/Header";
 import Footer from "../../../components/footer/Footer";
+import './InfoVoyage.css';
 
 interface Voyage {
   id: number;
@@ -104,35 +105,31 @@ function InfoVoyagePage() {
         <div className="content card card-travel">
           <div className="card-travel-top">
             <header className="card-header">
-              <button className="cta cta-icon" onClick={() => navigate("/voyages")}>
+              <button className="cta cta-round" onClick={() => navigate("/voyages")}>
                 ←
               </button>
 
               <button
-                className="cta card-header-cta"
+                className="cta cta-danger card-header-cta"
                 onClick={() => navigate(`/voyages/${voyage.id}/edit`)}
               >
                 Modifier
               </button>
             </header>
 
-            <h2>{voyage.label}</h2>
+            {/* <div className="image-filter"/> */}
 
             {}
             {mainMedia && (
-              <div style={{ marginTop: 12, textAlign: "center" }}>
+              <div className="main-media">
                 <img
                   src={mainMedia.url}
                   alt={mainMedia.nom}
-                  style={{
-                    width: "100%",
-                    maxHeight: 400,
-                    objectFit: "cover",
-                    borderRadius: 12,
-                  }}
                   onClick={() => setSelectedMedia(mainMedia)}
                 />
-                <p style={{ marginTop: 6 }}>{mainMedia.nom}</p>
+                <h3>{voyage.label}</h3>
+
+                {/* <p>{mainMedia.nom}</p> */}
               </div>
             )}
 
@@ -160,18 +157,12 @@ function InfoVoyagePage() {
 
             {}
             {tags.length > 0 && (
-              <div style={{ marginTop: 12 }}>
+              <div>
                 <strong>Tags :</strong>
-                <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 6 }}>
+                <div  className="tags-section">
                   {tags.map((tag) => (
                     <span
                       key={tag.id}
-                      style={{
-                        padding: "4px 10px",
-                        background: "#eee",
-                        borderRadius: 16,
-                        fontSize: 13,
-                      }}
                     >
                       {tag.titre}
                     </span>
@@ -183,31 +174,25 @@ function InfoVoyagePage() {
 
           {}
           {medias.length > 0 && (
-            <div style={{ marginTop: 24 }}>
-              <h2>Médias du voyage</h2>
+            <div>
+              <h3>Médias du voyage</h3>
 
-              <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+              <div className="travel-photos-container" >
                 {medias.map((media) => (
-                  <div key={media.id} style={{ textAlign: "center" }}>
+                  <div key={media.id} className="travel-photos-container-content">
                     <img
                       src={media.url}
                       alt={media.nom}
                       onClick={() => setSelectedMedia(media)}
                       style={{
-                        width: 160,
-                        height: 160,
-                        objectFit: "cover",
-                        borderRadius: 8,
-                        cursor: "pointer",
                         border: media.isMain ? "3px solid green" : "1px solid #ccc",
                       }}
                     />
-                    <p>{media.nom}</p>
+                    {/* <p>{media.nom}</p> */}
                     <a
                       href={media.url}
                       download={media.nom}
                       className="cta"
-                      style={{ marginTop: 6, display: "inline-block" }}
                     >
                       Télécharger
                     </a>
@@ -219,7 +204,7 @@ function InfoVoyagePage() {
 
           {}
           <div className="steps-section">
-            <h2>Étapes</h2>
+            <h3>Étapes</h3>
 
             {etapes.length === 0 && <p>Aucune étape enregistrée.</p>}
 

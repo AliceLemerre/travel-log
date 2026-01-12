@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "../../../lib/supabaseClient";
 import Header from "../../../components/header/Header";
 import Footer from "../../../components/footer/Footer";
+import './EtapeFormPage.css';
 
 import {
   addMedia,
@@ -191,10 +192,10 @@ function EtapeFormPage() {
 
       <main>
         <div className="content card card-travel card-form">
-          <h1>Modifier une étape</h1>
+          <h3>Modifier l'étape</h3>
 
           <button
-            className="cta cta-icon"
+            className="cta cta-round"
             onClick={() => navigate(`/voyages/${voyageId}/edit`)}
           >
             ←
@@ -237,9 +238,9 @@ function EtapeFormPage() {
 
             {allTags.length === 0 && <p>Aucun tag existant.</p>}
 
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
+            <div>
               {allTags.map((tag) => (
-                <label key={tag.id} style={{ display: "flex", gap: 6 }}>
+                <label key={tag.id}>
                   <input
                     type="checkbox"
                     checked={selectedTagIds.includes(tag.id)}
@@ -256,27 +257,34 @@ function EtapeFormPage() {
           </form>
 
           {}
-          <h2>Médias</h2>
+          {etapeId && (
+            <>
+              <h4>Médias</h4>
 
           <input type="file" accept="image/*" onChange={handleUploadMedia} />
           {uploading && <p>Upload en cours...</p>}
 
-          <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-            {medias.map((media) => (
-              <div key={media.id}>
-                <img
-                  src={media.url}
-                  alt={media.nom}
-                  style={{ width: 120, height: 120, objectFit: "cover" }}
-                />
-                <br />
-                <button onClick={() => handleDeleteMedia(media.id)}>
-                  Supprimer
-                </button>
+              <div>
+                {medias.map((media) => (
+                  <div key={media.id}>
+                    <img
+                      src={media.url}
+                      alt={media.nom}
+                      style={{
+                        width: 120,
+                        height: 120,
+                        objectFit: "cover",
+                      }}
+                    />
+                    <br />
+                    <button className="cta cta-danger" onClick={() => handleDeleteMedia(media.id)}>
+                      Supprimer
+                    </button>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-
+            </>
+          )}
         </div>
       </main>
 

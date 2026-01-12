@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "../../../lib/supabaseClient";
 import Header from "../../../components/header/Header";
 import Footer from "../../../components/footer/Footer";
+import './TagListPage.css';
 
 interface Tag {
   id: number;
@@ -52,10 +53,10 @@ function TagListPage() {
 
       <main>
         <div className="content card card-travel">
-          <header style={{ display: "flex", justifyContent: "space-between" }}>
-            <h1>Tags</h1>
-            <button className="cta" onClick={() => navigate("/tags/new")}>
-              + Ajouter
+          <header>
+            <h3>Tags</h3>
+            <button className="cta cta-round" onClick={() => navigate("/tags/new")}>
+              +
             </button>
           </header>
 
@@ -64,7 +65,6 @@ function TagListPage() {
             placeholder="Rechercher un tag..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            style={{ margin: "16px 0" }}
           />
 
           {loading && <p>Chargement...</p>}
@@ -74,11 +74,6 @@ function TagListPage() {
             {tags.map((tag) => (
               <li
                 key={tag.id}
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  marginBottom: 8,
-                }}
               >
                 <strong>{tag.titre}</strong>
 
@@ -91,8 +86,7 @@ function TagListPage() {
                   </button>
 
                   <button
-                    className="cta"
-                    style={{ marginLeft: 8 }}
+                    className="cta cta-danger"
                     onClick={() => setTagToDelete(tag)}
                   >
                     Supprimer
