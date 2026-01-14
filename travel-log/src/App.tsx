@@ -3,7 +3,6 @@ import HomePage from "./pages/home-page/HomePage";
 import PrivateRoute from "./components/private-route/PrivateRoute";
 import ListVoyagePage from "./pages/voyages/list-voyages/ListVoyages";
 import FormVoyagePage from "./pages/voyages/form-voyages/FormVoyages";
-import Auth from "./components/auth/Auth";
 import InfoVoyagePage from "./pages/voyages/info-voyages/InfoVoyages";
 import "./App.css";
 import EtapeFormPage from "./pages/etapes/form-etapes/EtapeFormPage";
