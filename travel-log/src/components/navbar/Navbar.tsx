@@ -1,76 +1,97 @@
-import { useState, useEffect } from "react";
-import { createClient } from "@supabase/supabase-js";
-
-const supabase = createClient(
-  import.meta.env.VITE_SUPABASE_URL,
-  import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY
-);
+import { useState } from "react";
+import { useEffect } from "react";
+import { Link } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import './Navbar.css'
 
 interface NavbarProps {
   isOpen: boolean;
   onToggle: () => void;
 }
 
-function Navbar({ isOpen, onToggle }: NavbarProps) {
-  const [user, setUser] = useState<unknown>(null);
+export default function Navbar({ isOpen }: NavbarProps) {
+  const { user, logout } = useAuth();
   const [showMenu, setShowMenu] = useState(false);
 
   useEffect(() => {
-    // checkUser();
-    // const { data: authListener } = supabase.auth.onAuthStateChange(
-    //   (event, session) => {
-    //     setUser(session?.user || null);
-    //   }
-    // );
-
-    // return () => {
-    //   authListener.subscription.unsubscribe();
-    // };
-  }, []);
-
-//   const checkUser = async () => {
-//     const { data: { user } } = await supabase.auth.getUser();
-//     setUser(user);
-//   };
-
-  const handleLogout = async () => {
-    await supabase.auth.signOut();
-    setUser(null);
-    setShowMenu(false);
-  };
+  const isDark = localStorage.getItem("dark") === "true";
+  document.documentElement.classList.toggle("dark", isDark);
+}, []);
 
   return (
     <nav className="navbar">
       <div className="navbar-container">
-        <button className="menu-toggle" onClick={onToggle}>
+        {/* <button className="menu-toggle" onClick={onToggle}>
           Menu
-        </button>
-        
-        <div className={`nav-links ${isOpen ? "open" : ""}`}>
+        </button> */}
+
+        <input className="checkbox" type="checkbox" />
+        <div className="hamburger-lines">
+        <span className="line line1"></span>
+        <span className="line line2"></span>
+        <span className="line line3"></span>
+        </div>
+    
+
+        <div className={`menu-items nav-links ${isOpen ? "open" : ""}`}>
+          {user && (
+            <>
+              <Link to="/voyages" className="nav-link">
+                 Mes voyages
+              </Link>
+
+              <Link to="/voyages/new" className="nav-link">
+                Nouveau voyage
+              </Link>
+            </>
+            
+
+           
+          )}
+
           {user ? (
             <>
-              <button className="nav-link" onClick={() => setShowMenu(!showMenu)}>
-                Mon Compte
-              </button>
+            <div className="nav-dropdown">
+              <a
+                className="nav-link"
+                onClick={() => setShowMenu(!showMenu)}
+              >
+                Paramètres
+              </a>
               
+
               {showMenu && (
-                <div className="account-menu">
-                  <button className="menu-item" onClick={() => {}}>
+                <div className="account-menu nav-links">
+                  <Link to="/tags" className="menu-item nav-link">
                     Liste des Tags
-                  </button>
-                  <button className="menu-item" onClick={() => {}}>
-                    Mon Profil
-                  </button>
-                  <button className="menu-item logout" onClick={handleLogout}>
-                    Déconnexion
-                  </button>
+                  </Link>
+                  <input
+                    type="checkbox"
+                    id="dark-mode-toggle"
+                    defaultChecked={localStorage.getItem("dark") === "true"}
+                    onChange={(e) => {
+                      localStorage.setItem("dark", String(e.target.checked));
+                      document.documentElement.classList.toggle("dark", e.target.checked);
+                    }}
+                  />
+                  <label htmlFor="dark-mode-toggle" className="toggle"></label>
                 </div>
               )}
+              </div>
+
+              <button className="menu-item cta cta-danger logout" onClick={logout}>
+                Déconnexion
+              </button>
             </>
           ) : (
             <>
-              <button className="nav-link">Connexion</button>
-              <button className="nav-link">Inscription</button>
+              <Link to="/login">
+                <button className="nav-link cta">Connexion</button>
+              </Link>
+
+              <Link to="/signup">
+                <button className="nav-link cta">Inscription</button>
+              </Link>
             </>
           )}
         </div>
@@ -78,5 +99,3 @@ function Navbar({ isOpen, onToggle }: NavbarProps) {
     </nav>
   );
 }
-
-export default Navbar;

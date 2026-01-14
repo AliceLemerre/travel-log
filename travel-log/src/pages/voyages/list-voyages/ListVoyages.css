@@ -1,0 +1,283 @@
+*{
+    transition: 0.2s ease-in-out;
+
+}
+
+.filter-cta{
+border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.3em 0.8em;
+  font-size: 0.9em;
+  background-color: var(--dark-grey);
+  color: var(--light-grey);
+  cursor: pointer;
+}
+
+.filters-section{
+    background-color: var(--grey);
+    border-radius: 0.3rem;
+    padding: 0.5rem 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.filters-section p{
+    margin: 0.5rem 0;
+}
+
+
+.filters{
+    height: 0rem;
+    display: flex;
+    overflow: hidden;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin: 0 auto;  
+    padding: 0;
+    transition:  0.4s ease-in-out;
+
+}
+
+.filters-section-header{
+    display: flex;
+}
+
+.filters-header{
+    display: flex;
+
+}
+
+.filters-section input[type="checkbox"]:checked ~ .filters {
+  height: 100%;
+}
+
+
+.label-column{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.card-travel-preview-content{
+    border: 0.5px solid var(--grey);
+    padding: 0.5rem;
+    border-radius: 0.4rem;
+    width: 100%;
+    gap: 0.1rem;
+}
+
+.filter-buttons{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.card-travel-header .cta{
+    aspect-ratio: 1/1;
+}
+
+.arrow {
+    height: 0.75rem;
+    width: 0.75rem;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -o-appearance: none;
+    appearance: none;
+    border: solid var(--light-grey);
+    border-width: 0 3px 3px 0;
+    display: inline-block;
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg);
+    transition: 0.2s ease-in-out;
+    margin: 8px 0 0 auto;
+    }
+
+.filters-section input[type="checkbox"]:checked {
+  transform: rotate(225deg);
+  -webkit-transform: rotate(225deg);
+  transition: 0.2s ease-in-out;
+
+}
+
+/*cards*/
+
+.card {
+  padding: 4rem;
+  position: relative;
+  margin: 1.5rem;
+}
+
+
+.card-header{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-header-cta{
+  padding: 0.4rem 1rem;
+
+}
+
+.card-travels{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+.card-dates{
+  text-align: center;
+  margin: 0.2 0;
+}
+
+.card-date{
+  padding: 0.3rem 0.8rem;
+  /* background-color: var(--light-blue); */
+  border-radius: 100px;
+}
+
+.card li{
+  list-style: none;
+}
+
+
+.card-form form{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.card-form label{
+  display: flex;
+  flex-direction: column;
+  /* flex: 0 1; */
+}
+
+.card-form input, .filters input{
+  padding: 0.3rem 0.8rem;
+  margin-top: 0.5rem;
+  margin-top: 0.5rem;
+  background: var(--background);
+  border-radius: 0.2rem;
+  color: var(--light-grey)
+}
+
+
+.card-travel{
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.card-travel-preview, .card-travel-preview-content{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card-travel-preview-content img{
+  width: 100%; 
+  aspect-ratio: 1/1;
+  object-fit: cover; 
+  border-radius: 0.3rem;
+}
+
+.card-travel-preview{
+    gap: 1rem;
+    width: 100%;
+}
+
+
+.steps-section{
+  width: 100%;
+}
+
+.card-footer{
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  padding-top: 1rem;
+  justify-content: center;
+}
+
+@media screen and (min-width: 456px) {
+
+  main{
+    display: flex;
+    justify-content: center;
+  }
+
+  .card-travel {
+  align-items: flex-start;
+    max-width: 900px;
+
+  }
+
+  .card-travel-preview  {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items:  flex-start;
+  justify-content: center;
+  }
+
+.card-travel-preview-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.card-travel-preview-content{
+  width: 17rem;
+}
+
+.card-travel-preview-content img{
+  aspect-ratio: 3/2;
+}
+
+
+  .filters {
+  flex-direction: row;
+  max-width: 100%;
+  flex-wrap: wrap;
+  }
+
+  .filter-buttons{
+  flex-direction: row;
+}
+
+  .filters-section input[type="checkbox"]:checked ~ .filters {
+    padding-bottom: 2rem;
+}
+
+
+  .label-column {
+  max-width: 13rem;
+  }
+  
+}
+
+@media screen and (min-width: 1000px) {
+
+.card-travel-preview-content{
+  width: 32%;
+}
+
+.card-travel-preview {
+  justify-content: flex-start;
+}
+}

@@ -1,0 +1,246 @@
+
+.logo{
+  box-sizing: unset;
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar .menu-items {
+  display: flex;
+}
+
+.navbar-container .checkbox {
+  position: absolute;
+  display: block;
+  height: 32px;
+  width: 32px;
+  top: 1rem;
+  right: 1rem;
+  z-index: 5;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.navbar-container .hamburger-lines {
+  display: block;
+  height: 26px;
+  width: 32px;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.navbar-container .hamburger-lines .line {
+  display: block;
+  height: 4px;
+  width: 100%;
+  border-radius: 50rem;
+  background: var(--header-font);
+}
+
+.navbar-container .hamburger-lines .line1 {
+  transform-origin: 0% 0%;
+  transition: transform 0.1s ease-in-out;
+}
+
+.navbar-container .hamburger-lines .line2 {
+  transition: transform 0.1s ease-in-out;
+}
+
+.navbar-container .hamburger-lines .line3 {
+  transform-origin: 0% 100%;
+  transition: transform 0.1s ease-in-out;
+}
+
+
+.navbar-container input[type="checkbox"]:checked ~ .hamburger-lines .line1 {
+  transform: rotate(45deg);
+}
+
+.navbar-container input[type="checkbox"]:checked ~ .hamburger-lines .line2 {
+  transform: scaleY(0);
+}
+
+.navbar-container input[type="checkbox"]:checked ~ .hamburger-lines .line3 {
+  transform: rotate(-45deg);
+}
+
+
+.nav-links{
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+.navbar{
+  width: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: var(--background);
+}
+
+.menu-items {
+  padding: 6rem 2rem 0 0;
+  height: 100vh;
+  width: 100%;
+  transform: translateX(250%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-left: 50px;
+  transition: transform 0.5s ease-in-out;
+  text-align: right;
+  background-color: var(--background);
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.navbar .menu-items a, .menu-items label {
+  margin-bottom: 1.2rem;
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.account-menu{
+  padding: 1rem;
+  background-color: var(--grey);
+  border-radius: 0.2rem;
+  margin: 0.5rem -0.1rem 0 0;
+  transition: ease-in-out 0.2s;
+}
+
+.navbar-container input[type="checkbox"]:checked ~ .menu-items {
+  transform: translateX(0%);
+}
+
+
+.nav-container input[type="checkbox"]:checked ~ .hamburger-lines .line1 {
+  transform: rotate(45deg);
+}
+
+.nav-container input[type="checkbox"]:checked ~ .hamburger-lines .line2 {
+  transform: scaleY(0);
+}
+
+.nav-container input[type="checkbox"]:checked ~ .hamburger-lines .line3 {
+  transform: rotate(-45deg);
+}
+
+.nav-container input[type="checkbox"]:checked ~ .logo{
+  display: none;
+}
+
+
+
+/* Dark Mode Toggle */
+#dark-mode-toggle {
+  display: none;
+}
+
+.toggle {
+  display: inline-block;
+  width: 60px; 
+  height: 30px;
+  background: var(--dark-blue);
+  border-radius: 30px;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.toggle::before {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 24px;
+  height: 24px;
+  background: var(--light-grey);
+  border-radius: 50%;
+}
+
+#dark-mode-toggle:checked + .toggle::before {
+  transform: translateX(30px);
+}
+
+
+@media screen and (min-width: 760px) {
+  .navbar-container .hamburger-lines, .nav-container checkbox{
+    display: none;
+  }
+
+  .nav-links{
+    display: flex;
+    gap: 1rem;
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .navbar{
+    width: 100%;
+    position: relative;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    background-color: transparent;
+  }
+
+  .navbar .menu-items a{
+    color: var(--header-font);
+    font-size: 1.1rem;
+  }
+
+  .navbar .account-menu .menu-item{
+    color: var(--light-grey)  
+  }
+
+
+  .menu-items {
+    padding: 0;
+    height: 5rem;
+    width: 100%;
+    transform: translateX(0%);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    padding-left: 0px;
+    background-color: transparent;
+    position: unset;
+    top: 0;
+    right: 0;
+    gap: 3rem;
+  }
+
+  .account-menu{
+  flex-direction: column;
+  z-index: 999;
+  position: absolute ;
+  right: 0;
+  width: 10rem;
+  top: 2rem;
+}
+
+.nav-dropdown{
+  position: relative;
+}
+
+.navbar .logout{
+  margin-top: -0.45em;
+}
+
+
+}
