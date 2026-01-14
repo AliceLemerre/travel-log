@@ -267,10 +267,12 @@ function FormVoyagePage() {
 
             {mode === "update" && (
               <>
-                <h4>Tags</h4>
-                <div className="tags-section">
+
+                <div className="tags-section">  
+                  <h4>Tags</h4>
+                
                   {allTags.map((tag) => (
-                    <label key={tag.id}>
+                    <label key={tag.id} className="tags-section-checkbox">
                       <input
                         type="checkbox"
                         checked={selectedTags.includes(tag.id)}
@@ -290,7 +292,7 @@ function FormVoyagePage() {
                         alt={media.nom}
                         title={media.nom}
                         style={{
-                          border: media.id === selectedMainMedia ? "3px solid green" : "1px solid #ccc",
+                          border: media.id === selectedMainMedia ? "0.5px solid black" : "1px solid #ccc",
                         }}
                         onClick={() => setSelectedMainMedia(media.id)}
                       />
@@ -306,8 +308,9 @@ function FormVoyagePage() {
 
           {id && (
             <>
-              <h2>Étapes</h2>
+              <h4>Étapes</h4>
 
+              <div className="steps-section">
               <input
                 type="text"
                 placeholder="Rechercher une étape"
@@ -319,6 +322,7 @@ function FormVoyagePage() {
                 Ajouter une étape
                 {/* <img className="cta-icon" src="./src/assets/images/add.svg" alt="" /> */}
               </button>
+              </div>
 
               <ul className="content card-travel-preview">
                 {etapes.map((etape) => (

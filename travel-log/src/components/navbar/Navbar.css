@@ -88,7 +88,7 @@
   top: 0;
   right: 0;
   z-index: 1000;
-  background-color: var(--dark-grey);
+  background-color: var(--background);
 }
 
 .menu-items {
@@ -102,7 +102,7 @@
   padding-left: 50px;
   transition: transform 0.5s ease-in-out;
   text-align: right;
-  background-color: var(--dark-grey);
+  background-color: var(--background);
   position: absolute;
   top: 0;
   right: 0;
@@ -118,6 +118,8 @@
   padding: 1rem;
   background-color: var(--grey);
   border-radius: 0.2rem;
+  margin: 0.5rem -0.1rem 0 0;
+  transition: ease-in-out 0.2s;
 }
 
 .navbar-container input[type="checkbox"]:checked ~ .menu-items {
@@ -152,7 +154,7 @@
   display: inline-block;
   width: 60px; 
   height: 30px;
-  background: var(--blue);
+  background: var(--dark-blue);
   border-radius: 30px;
   position: relative;
   cursor: pointer;
@@ -168,7 +170,6 @@
   height: 24px;
   background: var(--light-grey);
   border-radius: 50%;
-  transition: transform 0.3s;
 }
 
 #dark-mode-toggle:checked + .toggle::before {
@@ -200,6 +201,10 @@
   .navbar .menu-items a{
     color: var(--header-font);
     font-size: 1.1rem;
+  }
+
+  .navbar .account-menu .menu-item{
+    color: var(--light-grey)  
   }
 
 

@@ -3,7 +3,6 @@ import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "../../../lib/supabaseClient";
 import Header from "../../../components/header/Header";
 import Footer from "../../../components/footer/Footer";
-import './EtapeFormPage.css';
 
 interface Etape {
   label: string;
@@ -109,7 +108,7 @@ function EtapeFormPage() {
 
 
           <form onSubmit={handleSubmit}>
-            <label className="label-column">
+            <label>
               Nom de l'étape
               <input
                 type="text"
@@ -120,7 +119,7 @@ function EtapeFormPage() {
               />
             </label>
 
-            <label className="label-column">
+            <label>
               Adresse
               <input
                 type="text"
@@ -130,7 +129,7 @@ function EtapeFormPage() {
               />
             </label>
 
-            <label className="label-column">
+            <label>
               Pays
               <input
                 type="text"
@@ -140,7 +139,7 @@ function EtapeFormPage() {
               />
             </label>
 
-            <label className="label-column">
+            <label>
               Région
               <input
                 type="text"
@@ -150,7 +149,7 @@ function EtapeFormPage() {
               />
             </label>
 
-            <label className="label-column">
+            <label>
               Notes
               <textarea
                 name="notes"
@@ -159,7 +158,7 @@ function EtapeFormPage() {
               />
             </label>
 
-            <label className="label-column">
+            <label>
               Dépenses (€)
               <input
                 type="number"
@@ -169,7 +168,7 @@ function EtapeFormPage() {
               />
             </label>
 
-            <button className="cta" type="submit">
+            <button type="submit">
               {mode === "add" ? "Créer" : "Mettre à jour"}
             </button>
           </form>
@@ -182,4 +181,3 @@ function EtapeFormPage() {
 }
 
 export default EtapeFormPage;
-

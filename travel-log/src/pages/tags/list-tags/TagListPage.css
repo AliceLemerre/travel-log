@@ -1,6 +1,7 @@
 .tags-page input{
     background-color: var(--background);
     color: var(--light-grey);
+    border-radius: 0.2rem;
 }
 
 .tags-page ul{
@@ -8,20 +9,55 @@
     flex-direction: column;
     align-items: flex-end;
     gap: 0.5rem;
-
+    flex-wrap: wrap;
 }
 
-.card li {
+.tags-page .card li {
     display: flex;
     padding: 1rem 0;
-    border-bottom: 0.25px solid black;
+    border: none;
+    border-bottom: 0.25px solid #ccc;
     width: 100%;
     flex-direction: column;
     align-items: center;
     gap: 0.5rem;
+    max-width: 10rem;
+}
+
+.tags-page .card li div{
+    display: flex;
+    gap: 0.5rem;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 
 .tags-page .cta {
 margin-right: 0.5rem;
+}
+
+.tags-page .card-travel{
+    align-items: center;
+}
+
+@media screen and (min-width: 500px) {
+    .tags-page .card-travel{
+        max-width: 900px;
+    }
+
+    .tags-page ul{
+    flex-direction: row;
+    justify-content: center;
+    }
+
+    .tags-page .card li{
+        border: 0.25px solid #ccc;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        justify-content: center;
+        align-items: center;
+    }
+
+
 }

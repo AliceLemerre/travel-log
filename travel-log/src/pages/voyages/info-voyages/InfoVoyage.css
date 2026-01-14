@@ -41,6 +41,7 @@
     aspect-ratio: 1/1;
     object-fit: cover;
     border-radius: 0.5rem;
+    filter: brightness(70%);
 }
 
 .main-media p{
@@ -49,9 +50,17 @@
 
 .tags-section{
   display: flex;
-  gap: 1rem;
+  gap: 0.5rem;
   flex-wrap: wrap;
-  margin-top: 0.5rem;
+}
+
+.info-voyage-page .tags-section{
+    justify-content: flex-start;
+    margin-top: 0.5rem;
+}
+
+.tags-section-checkbox input{
+    margin: 0;
 }
 
 .tags-section span{
@@ -60,8 +69,11 @@
     color: black;
     border-radius: 10rem;
     font-size: 13px;
-    
 }
+
+/* .tags-section-checkbox{
+
+} */
 
 .card-travel-top{
   gap: 1rem;

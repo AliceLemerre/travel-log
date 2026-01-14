@@ -22,6 +22,11 @@
     z-index: 10;
 }
 
+.home-page-intro-img-a:hover{
+    transform: rotate(0deg);
+    transition: ease-in-out 0.2s;
+
+}
 
 .home-page-intro-img-b{
     margin-left: -2.5rem;
@@ -29,9 +34,20 @@
     z-index: 5;
 }
 
+.home-page-intro-img-b:hover{
+    transform: rotate(0deg);
+    transition: ease-in-out 0.2s;
+}
+
 .home-page-intro-img-c{
     margin-left: -5rem;
     z-index: 3;
+}
+
+.home-page-intro-img-c:hover{
+    transform: rotate(0deg);
+    transition: ease-in-out 0.2s;
+
 }
 
 .home-page-intro p {

@@ -126,7 +126,7 @@ function EtapeDetailPage() {
 
           {tags.length > 0 && (
             <>
-              <h2>Tags</h2>
+              <h4>Tags</h4>
               <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
                 {tags.map((tag) => (
                   <span
@@ -149,26 +149,18 @@ function EtapeDetailPage() {
             <>
               <h4>Médias</h4>
 
-              <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginTop: 10 }}>
+              <div className="step-medias">
                 {medias.map((media) => (
-                  <div key={media.id} style={{ textAlign: "center" }}>
+                  <div key={media.id}>
                     <img
                       src={media.url}
                       alt={media.nom}
-                      onClick={() => setSelectedMedia(media)}
-                      style={{
-                        width: 150,
-                        height: 150,
-                        objectFit: "cover",
-                        cursor: "pointer",
-                        borderRadius: 6,
-                      }}
+                      onClick={() => setSelectedMedia(media)}    
                     />
                     <a
                       href={media.url}
                       download={media.nom}
                       className="cta"
-                      style={{ marginTop: 6, display: "inline-block" }}
                     >
                       Télécharger
                     </a>

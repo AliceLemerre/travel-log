@@ -53,10 +53,10 @@ function TagListPage() {
 
       <main>
         <div className="content card card-travel">
-          <header>
+          <header className="card-header">
             <h3>Tags</h3>
             <button className="cta cta-round" onClick={() => navigate("/tags/new")}>
-              +
+              <img className="cta-icon" src="./src/assets/images/add.svg" alt="" />
             </button>
           </header>
 
@@ -103,7 +103,8 @@ function TagListPage() {
           style={{
             position: "fixed",
             inset: 0,
-            background: "rgba(0,0,0,0.6)",
+            background: "rgba(0,0,0,0.8)",
+            color: 'var(--white)',
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
