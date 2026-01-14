@@ -12,6 +12,9 @@ align-items: center;
 gap: 1rem;
 }
 
+.auth-page h1{
+    color: var(--light-grey);
+}
 
 .auth-page .label-column{
     max-width: unset;

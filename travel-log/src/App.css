@@ -88,7 +88,7 @@ main{
   --white: #fff;
 }
 
-:has(#dark-mode-toggle:checked) {
+html.dark {
   --light-grey: #efefef;
   --dark-grey: #000;
   --background: #100b1f;
