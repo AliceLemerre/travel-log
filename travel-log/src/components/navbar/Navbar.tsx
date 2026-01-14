@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import './Navbar.css'
@@ -11,6 +12,11 @@ interface NavbarProps {
 export default function Navbar({ isOpen }: NavbarProps) {
   const { user, logout } = useAuth();
   const [showMenu, setShowMenu] = useState(false);
+
+  useEffect(() => {
+  const isDark = localStorage.getItem("dark") === "true";
+  document.documentElement.classList.toggle("dark", isDark);
+}, []);
 
   return (
     <nav className="navbar">
@@ -59,7 +65,15 @@ export default function Navbar({ isOpen }: NavbarProps) {
                   <Link to="/tags" className="menu-item nav-link">
                     Liste des Tags
                   </Link>
-                  <input type="checkbox" id="dark-mode-toggle"></input>
+                  <input
+                    type="checkbox"
+                    id="dark-mode-toggle"
+                    defaultChecked={localStorage.getItem("dark") === "true"}
+                    onChange={(e) => {
+                      localStorage.setItem("dark", String(e.target.checked));
+                      document.documentElement.classList.toggle("dark", e.target.checked);
+                    }}
+                  />
                   <label htmlFor="dark-mode-toggle" className="toggle"></label>
                 </div>
               )}

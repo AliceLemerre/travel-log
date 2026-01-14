@@ -302,8 +302,9 @@ function FormVoyagePage() {
                 </div>
               </>
             )}
-
-            <button className="cta" type="submit">{mode === "add" ? "Créer" : "Mettre à jour"}</button>
+            <div className="end-button">
+             <button className="cta" type="submit">{mode === "add" ? "Créer" : "Mettre à jour"}</button>
+            </div>
           </form>
 
           {id && (
