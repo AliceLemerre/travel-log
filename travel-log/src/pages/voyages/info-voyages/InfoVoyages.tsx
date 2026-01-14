@@ -161,7 +161,7 @@ function InfoVoyagePage() {
                 <strong>Tags :</strong>
                 <div  className="tags-section">
                   {tags.map((tag) => (
-                    <span
+                    <span className="tags-section-checkbox"
                       key={tag.id}
                     >
                       {tag.titre}
@@ -175,7 +175,7 @@ function InfoVoyagePage() {
           {}
           {medias.length > 0 && (
             <div>
-              <h3>Médias du voyage</h3>
+              <h4>Médias du voyage</h4>
 
               <div className="travel-photos-container" >
                 {medias.map((media) => (
@@ -185,7 +185,7 @@ function InfoVoyagePage() {
                       alt={media.nom}
                       onClick={() => setSelectedMedia(media)}
                       style={{
-                        border: media.isMain ? "3px solid green" : "1px solid #ccc",
+                        border: media.isMain ? "0.5px solid black" : "1px solid #ccc",
                       }}
                     />
                     {/* <p>{media.nom}</p> */}
@@ -204,7 +204,7 @@ function InfoVoyagePage() {
 
           {}
           <div className="steps-section">
-            <h3>Étapes</h3>
+            <h4>Étapes</h4>
 
             {etapes.length === 0 && <p>Aucune étape enregistrée.</p>}
 

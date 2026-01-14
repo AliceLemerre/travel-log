@@ -1,0 +1,11 @@
+.tag-create{
+    display: flex;
+  flex-direction: column;
+}
+
+.tag-create input{
+    background-color: var(--background);
+    margin-top: 0.2rem;
+    color: var(--light-grey);
+    border-radius: 0.2rem;
+}

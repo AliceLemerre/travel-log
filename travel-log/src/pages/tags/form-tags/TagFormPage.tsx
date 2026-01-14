@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "../../../lib/supabaseClient";
 import Header from "../../../components/header/Header";
 import Footer from "../../../components/footer/Footer";
+import './TagFormPage.css';
 
 function TagFormPage() {
   const { id } = useParams();
@@ -68,17 +69,19 @@ function TagFormPage() {
 
       <main>
         <div className="content card card-travel">
-          <h1>{mode === "add" ? "Ajouter un tag" : "Modifier le tag"}</h1>
+          <div className="card-header">
+            <h3>{mode === "add" ? "Ajouter un tag" : "Modifier le tag"}</h3>
 
-          <button
-            className="cta cta-icon"
-            onClick={() => navigate("/tags")}
-          >
-            ←
-          </button>
+            <button
+              className="cta cta-round"
+              onClick={() => navigate("/tags")}
+            >
+              ←
+            </button>
+          </div>
 
-          <form onSubmit={handleSubmit}>
-            <label>
+          <form onSubmit={handleSubmit} className="card-travel-create tag-create">
+            <label className="label-column">
               Titre
               <input
                 type="text"

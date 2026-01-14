@@ -8,7 +8,7 @@ interface NavbarProps {
   onToggle: () => void;
 }
 
-export default function Navbar({ isOpen, onToggle }: NavbarProps) {
+export default function Navbar({ isOpen }: NavbarProps) {
   const { user, logout } = useAuth();
   const [showMenu, setShowMenu] = useState(false);
 
@@ -30,12 +30,12 @@ export default function Navbar({ isOpen, onToggle }: NavbarProps) {
         <div className={`menu-items nav-links ${isOpen ? "open" : ""}`}>
           {user && (
             <>
-              <Link to="/voyages">
-                <a className="nav-link">Mes voyages</a>
+              <Link to="/voyages" className="nav-link">
+                 Mes voyages
               </Link>
 
-              <Link to="/voyages/new">
-                <a className="nav-link">Nouveau voyage</a>
+              <Link to="/voyages/new" className="nav-link">
+                Nouveau voyage
               </Link>
             </>
             
@@ -56,10 +56,9 @@ export default function Navbar({ isOpen, onToggle }: NavbarProps) {
 
               {showMenu && (
                 <div className="account-menu nav-links">
-                  <Link to="/tags">
-                    <a className="menu-item nav-link">Liste des Tags</a>
+                  <Link to="/tags" className="menu-item nav-link">
+                    Liste des Tags
                   </Link>
-                  <a className="menu-item nav-link">Mon Profil</a>
                   <input type="checkbox" id="dark-mode-toggle"></input>
                   <label htmlFor="dark-mode-toggle" className="toggle"></label>
                 </div>

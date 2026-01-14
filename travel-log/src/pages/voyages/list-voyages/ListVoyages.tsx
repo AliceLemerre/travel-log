@@ -215,13 +215,15 @@ function ListVoyagePage() {
             </label>
 
 
-            <button className="filter-cta" onClick={() => setSortAsc((v) => !v)}>
-              Trier par label {sortAsc ? "↑" : "↓"}
-            </button>
+            <div className="filter-buttons">
+              <button className="filter-cta" onClick={() => setSortAsc((v) => !v)}>
+                Trier par label {sortAsc ? "↑" : "↓"}
+              </button>
 
-            <button className="filter-cta" onClick={resetFilters} style={{ marginLeft: "8px" }}>
-              Réinitialiser les filtres
-            </button>
+              <button className="filter-cta" onClick={resetFilters} style={{ marginLeft: "8px" }}>
+                Réinitialiser les filtres
+              </button>
+            </div>
           </div>
           </section>
 
@@ -254,9 +256,9 @@ function ListVoyagePage() {
 
                 {/* affichage des tags */}
                 {tagsMap[voyage.id] && tagsMap[voyage.id].length > 0 && (
-                  <div>
+                  <div className="tags-section">
                     {tagsMap[voyage.id].map(tag => (
-                      <span key={tag.id} style={{ padding: "2px 8px", background: "#eee", borderRadius: 12, fontSize: 12 }}>
+                      <span key={tag.id}>
                         {tag.titre}
                       </span>
                     ))}

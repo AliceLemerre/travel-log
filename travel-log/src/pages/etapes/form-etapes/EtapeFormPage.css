@@ -6,3 +6,31 @@
     background-color: var(--background);
     color: var(--light-grey);
 }
+
+.etape-form-page .tags-section{
+    justify-content: flex-start;
+    margin-top: 0.5rem;
+}
+
+.etape-form-page textarea{
+    height: 30px;
+    border-radius: 0.2rem;
+}
+
+.etape-form-page .tags-section{
+    display: flex;
+    flex-direction: row;
+}
+
+.etape-form-page .medias-section div{
+    text-align: right;
+}
+
+
+.etape-form-page button{
+    margin-top: 0.3rem;
+}
+
+.etape-form-page form{
+    justify-content: center;
+}

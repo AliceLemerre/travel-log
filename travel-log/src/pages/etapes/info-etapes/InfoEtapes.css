@@ -1,10 +1,46 @@
 .etape-detail-page .card-travel{
-    text-align: left;
     align-items: flex-start;
+    text-align: center;
+    gap: 0.25rem;
 }
 
 .etape-detail-page .card-footer{
     margin-top: 1rem;
     display: flex;
     gap: 0.5rem;
+}
+
+.etape-detail-page p{
+    margin: 0.5rem 0;
+}
+
+
+.step-medias{
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.step-medias div{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.step-medias img{
+    width: 16rem;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    cursor: pointer;
+    border-radius: 0.5rem,                
+}
+
+.step-medias a{
+  margin: -2.3rem 0.5rem 0 0;
+}
+
+.card-footer{
+    margin: 0 auto;
 }
