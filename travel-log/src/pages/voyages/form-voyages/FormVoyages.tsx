@@ -68,6 +68,8 @@ function FormVoyagePage() {
     if (!id) return;
 
     let query = supabase.from("Etapes").select("*").eq("voyage_id", Number(id));
+    // ilike comparaison insensible à la casse
+    // %mot% le mot peut apparaître n’importe où dans la chaîne
     if (search) query = query.ilike("label", `%${search}%`);
 
     const { data } = await query;
@@ -142,7 +144,10 @@ function FormVoyagePage() {
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target;
 
+    // Champs de type liste (string[])
     if (["regions", "pays", "villes"].includes(name)) {
+      // value.split(",") → transforme "Paris, Lyon" en ["Paris", " Lyon"]
+      // .map(v => v.trim()) → supprime les espaces
       setForm((f) => ({ ...f, [name]: value.split(",").map((v) => v.trim()) }));
     } else if (["budget", "depenses"].includes(name)) {
       setForm((f) => ({ ...f, [name]: value ? Number(value) : null }));
@@ -153,6 +158,7 @@ function FormVoyagePage() {
 
   function toggleTag(tagId: number) {
     setSelectedTags((prev) =>
+      // Cette fonction ajoute ou retire un tag (identifié par tagId) dans la liste des tags sélectionnés.
       prev.includes(tagId) ? prev.filter((id) => id !== tagId) : [...prev, tagId]
     );
   }
