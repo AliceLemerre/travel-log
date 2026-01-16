@@ -218,8 +218,27 @@ function FormVoyagePage() {
     const confirmDelete = window.confirm("Supprimer cette étape ?");
     if (!confirmDelete) return;
 
-    const { error } = await supabase.from("Etapes").delete().eq("id", etapeId);
-    if (!error) loadEtapes(searchEtape);
+    const { error: mediasError } = await supabase
+      .from("Medias")
+      .delete()
+      .eq("etape_id", etapeId);
+
+    if (mediasError) {
+      console.error("Erreur suppression médias étape :", mediasError);
+      return;
+    }
+
+    const { error: etapeError } = await supabase
+      .from("Etapes")
+      .delete()
+      .eq("id", etapeId);
+
+    if (etapeError) {
+      console.error("Erreur suppression étape :", etapeError);
+      return;
+    }
+
+    loadEtapes(searchEtape);
   }
 
   return (
@@ -274,7 +293,7 @@ function FormVoyagePage() {
             {mode === "update" && (
               <>
 
-                <div className="tags-section">  
+                   <div className="tags-section">  
                   <h4>Tags</h4>
                 
                   {allTags.map((tag) => (
@@ -289,7 +308,7 @@ function FormVoyagePage() {
                   ))}
                 </div>
 
-                <h4>Médias du voyage</h4>
+              <h4>Médias du voyage</h4>
                 <div className="medias-section">
                   {medias.map((media) => (
                     <div key={media.id}>
@@ -318,17 +337,17 @@ function FormVoyagePage() {
               <h4>Étapes</h4>
 
               <div className="steps-section">
-              <input
-                type="text"
-                placeholder="Rechercher une étape"
-                value={searchEtape}
-                onChange={(e) => setSearchEtape(e.target.value)}
-              />
+                <input
+                  type="text"
+                  placeholder="Rechercher une étape"
+                  value={searchEtape}
+                  onChange={(e) => setSearchEtape(e.target.value)}
+                />
 
-              <button className="cta" onClick={() => navigate(`/voyages/${id}/etapes/new`)}>
-                Ajouter une étape
-                {/* <img className="cta-icon" src="/assets/images/add.svg" alt="" /> */}
-              </button>
+                <button className="cta" onClick={() => navigate(`/voyages/${id}/etapes/new`)}>
+                  Ajouter une étape
+                  {/* <img className="cta-icon" src="/assets/images/add.svg" alt="" /> */}
+                </button>
               </div>
 
               <ul className="content card-travel-preview">
@@ -345,7 +364,7 @@ function FormVoyagePage() {
                       </button>
                       <button className="cta cta-danger" onClick={() => deleteEtape(etape.id)}>
                         Supprimer
-                        {/* <img className="cta-icon" src="/assets/images/close.svg" alt="" /> */}
+                        {/* <img className="cta-icon" src="./src/assets/images/close.svg" alt="" /> */}
                       </button>
                     </footer>
                   </li>

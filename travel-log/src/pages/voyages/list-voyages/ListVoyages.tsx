@@ -120,9 +120,41 @@ function ListVoyagePage() {
     );
     if (!confirmDelete) return;
 
-    const { error } = await supabase.from("Voyages").delete().eq("id", id);
-    if (error) console.error("Erreur suppression :", error);
-    else loadVoyages();
+    const { error: mediasError } = await supabase
+      .from("Medias")
+      .delete()
+      .eq("voyage_id", id);
+
+    if (mediasError) {
+      console.error("Erreur suppression médias :", mediasError);
+      return;
+    }
+
+    const { error: etapesError } = await supabase
+      .from("Etapes")
+      .delete()
+      .eq("voyage_id", id);
+
+    if (etapesError) {
+      console.error("Erreur suppression étapes :", etapesError);
+      return;
+    }
+
+    await supabase
+      .from("Tags_voyage")
+      .delete()
+      .eq("voyage_id", id);
+
+    const { error: voyageError } = await supabase
+      .from("Voyages")
+      .delete()
+      .eq("id", id);
+
+    if (voyageError) {
+      console.error("Erreur suppression voyage :", voyageError);
+    } else {
+      loadVoyages();
+    }
   }
 
   const resetFilters = () => {
