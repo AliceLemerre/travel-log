@@ -10,8 +10,10 @@ function isValidEmail(email: string) {
 
 function isValidPassword(password: string) {
   return (
+    // Vérifie si mdp a plus de 6 caractères, un chiffre et au moins un caractère spécial
     password.length >= 6 &&
     /[0-9]/.test(password) &&
+    // N’importe quel caractère qui n’est PAS une lettre (A–Z, a–z) ni un chiffre (0–9)
     /[^A-Za-z0-9]/.test(password)
   );
 }

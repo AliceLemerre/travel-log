@@ -29,6 +29,7 @@ function EtapeFormPage() {
     depenses: null,
   });
 
+  // éxécute code après rendu du composant Reacy
   useEffect(() => {
     if (!etapeId) return;
 
@@ -38,6 +39,8 @@ function EtapeFormPage() {
         .select("*")
         .eq("id", etapeId)
         .single();
+
+      // single retourne les valeurs dans un seul objet au lieu d'un array
 
       if (data) {
         setForm({
@@ -55,7 +58,10 @@ function EtapeFormPage() {
   }, [etapeId]);
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+    // attribut name de l’input et valeur saisie par l’utilisateur
     const { name, value } = e.target;
+    // ...f Copie toutes les propriétés existantes du formulaire
+    // name clé dynamique, met à jour uniquement le champ correspondant
     setForm((f) => ({ ...f, [name]: value }));
   }
 
