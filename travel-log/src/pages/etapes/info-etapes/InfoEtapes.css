@@ -14,6 +14,9 @@
     margin: 0.5rem 0;
 }
 
+.etape-detail-page span{
+    color: black;
+}
 
 .step-medias{
     display: flex;
