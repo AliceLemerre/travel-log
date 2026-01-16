@@ -178,13 +178,12 @@ function FormVoyagePage() {
     if (!user) return;
 
     if (mode === "add") {
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from("Voyages")
         .insert({ ...form, user_id: user.id })
         .select()
         .single();
-
-      if (!error && data) navigate(`/voyages/${data.id}/edit`);
+      if (!error) navigate(`/voyages`);
     }
 
     if (mode === "update") {
@@ -210,7 +209,7 @@ function FormVoyagePage() {
         await supabase.from("Medias").update({ isMain: true }).eq("id", selectedMainMedia);
       }
 
-      navigate(`/voyages/${id}/edit`);
+      navigate(`/voyages`);
     }
   }
 
