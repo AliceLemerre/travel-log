@@ -327,7 +327,7 @@ function FormVoyagePage() {
 
               <button className="cta" onClick={() => navigate(`/voyages/${id}/etapes/new`)}>
                 Ajouter une étape
-                {/* <img className="cta-icon" src="/src/assets/images/add.svg" alt="" /> */}
+                {/* <img className="cta-icon" src="/assets/images/add.svg" alt="" /> */}
               </button>
               </div>
 
@@ -345,7 +345,7 @@ function FormVoyagePage() {
                       </button>
                       <button className="cta cta-danger" onClick={() => deleteEtape(etape.id)}>
                         Supprimer
-                        {/* <img className="cta-icon" src="/src/assets/images/close.svg" alt="" /> */}
+                        {/* <img className="cta-icon" src="/assets/images/close.svg" alt="" /> */}
                       </button>
                     </footer>
                   </li>
