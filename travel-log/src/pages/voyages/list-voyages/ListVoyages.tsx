@@ -145,7 +145,7 @@ function ListVoyagePage() {
             <h3>Mes voyages</h3>
 
             <button className="cta cta-round" title="ajouter un voyage" onClick={() => navigate("/voyages/new")}>
-            <img className="cta-icon" src="./src/assets/images/add.svg" alt="" />
+            <img className="cta-icon" src="/src/assets/images/add.svg" alt="" />
             </button>
           </header>
 
