@@ -88,17 +88,28 @@ function App() {
 
         <Route 
           path="/tags" 
-          element={<TagListPage />} 
+          element={
+            <PrivateRoute>
+              <TagListPage />
+            </PrivateRoute>
+          } 
         />
 
         <Route 
           path="/tags/new" 
-          element={<TagFormPage />} 
+          element={
+            <PrivateRoute>
+              <TagFormPage />
+            </PrivateRoute>
+          } 
         />
 
         <Route 
           path="/tags/:id/edit" 
-          element={<TagFormPage />} 
+          element={
+            <PrivateRoute>
+              <TagFormPage />
+            </PrivateRoute>} 
         />
 
         <Route path="/404" element={<Page404 />} />
