@@ -56,22 +56,22 @@ main{
 
 @font-face {
   font-family: 'Apfel Grotesk';
-  src: url('/fonts/ApfelGrotezk-Regular.woff');
+  src: url('/assets/fonts/ApfelGrotezk-Regular.woff');
 }
 
 @font-face {
   font-family: 'Apfel Grotesk Black';
-  src: url('/fonts/ApfelGrotezk-Black.woff');
+  src: url('/assets/fonts/ApfelGrotezk-Black.woff');
 }
 
 @font-face {
   font-family: 'Apfel Grotesk Medium';
-  src: url('/fonts/ApfelGrotezk-Mittel.woff');
+  src: url('/assets/fonts/ApfelGrotezk-Mittel.woff');
 }
 
 @font-face {
   font-family: 'Apfel Grotesk Bold';
-  src: url('/fonts/ApfelGrotezk-Fett.woff');
+  src: url('/assets/fonts/ApfelGrotezk-Fett.woff');
 }
 
 :root {

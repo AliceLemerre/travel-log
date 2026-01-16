@@ -56,7 +56,7 @@ function TagListPage() {
           <header className="card-header">
             <h3>Tags</h3>
             <button className="cta cta-round" onClick={() => navigate("/tags/new")}>
-              <img className="cta-icon" src="/src/assets/images/add.svg" alt="" />
+              <img className="cta-icon" src="/assets/images/add.svg" alt="" />
             </button>
           </header>
 
