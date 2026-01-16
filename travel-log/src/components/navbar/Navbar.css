@@ -108,10 +108,11 @@
   right: 0;
 }
 
-.navbar .menu-items a, .menu-items label {
+.navbar .menu-items a, .menu-items label, .menu-item {
   margin-bottom: 1.2rem;
   font-size: 1.5rem;
   font-weight: 500;
+  color: #646cff;
 }
 
 .account-menu{
@@ -176,6 +177,12 @@
   transform: translateX(30px);
 }
 
+.dark-mode-div{
+  display: flex;
+  gap: 1rem;
+  line-height: 1;
+align-items: flex-end;}
+
 
 @media screen and (min-width: 760px) {
   .navbar-container .hamburger-lines, .nav-container checkbox{
@@ -198,7 +205,7 @@
     background-color: transparent;
   }
 
-  .navbar .menu-items a{
+  .navbar .menu-items a, .menu-item{
     color: var(--header-font);
     font-size: 1.1rem;
   }
@@ -241,6 +248,12 @@
 .navbar .logout{
   margin-top: -0.45em;
 }
+
+.dark-mode-div{
+  align-items: unset;
+  line-height: 0;
+}
+
 
 
 }

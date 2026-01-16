@@ -219,8 +219,8 @@ function EtapeFormPage() {
 
           <h3>{mode === "add" ? "Ajouter une étape" : "Modifier une étape"}</h3>
 
-          <button onClick={() => navigate(`/voyages/${voyageId}/edit`)}>
-            Retour au voyage
+          <button className="cta cta-round" onClick={() => navigate(`/voyages/${voyageId}/edit`)}>
+             ←
           </button>
         </header>
 
@@ -259,13 +259,14 @@ function EtapeFormPage() {
 
            
             {}
-            <h2>Tags</h2>
+           
+
+            <div className="tags-section">
+               <h4>Tags</h4>
 
             {allTags.length === 0 && <p>Aucun tag existant.</p>}
-
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
               {allTags.map((tag) => (
-                <label key={tag.id} style={{ display: "flex", gap: 6 }}>
+                <label key={tag.id} className="tags-section-checkbox">
                   <input
                     type="checkbox"
                     checked={selectedTagIds.includes(tag.id)}
@@ -282,12 +283,12 @@ function EtapeFormPage() {
           </form>
 
           {}
-          <h2>Médias</h2>
+          <h4>Médias</h4>
 
           <input type="file" accept="image/*" onChange={handleUploadMedia} />
           {uploading && <p>Upload en cours...</p>}
 
-          <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+          <div className="medias-section">
             {medias.map((media) => (
               <div key={media.id}>
                 <img
@@ -296,7 +297,7 @@ function EtapeFormPage() {
                   style={{ width: 120, height: 120, objectFit: "cover" }}
                 />
                 <br />
-                <button onClick={() => handleDeleteMedia(media.id)}>
+                <button className="cta cta-danger" onClick={() => handleDeleteMedia(media.id)}>
                   Supprimer
                 </button>
               </div>

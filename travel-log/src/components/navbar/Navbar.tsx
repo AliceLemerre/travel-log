@@ -65,16 +65,25 @@ export default function Navbar({ isOpen }: NavbarProps) {
                   <Link to="/tags" className="menu-item nav-link">
                     Liste des Tags
                   </Link>
-                  <input
-                    type="checkbox"
-                    id="dark-mode-toggle"
-                    defaultChecked={localStorage.getItem("dark") === "true"}
-                    onChange={(e) => {
-                      localStorage.setItem("dark", String(e.target.checked));
-                      document.documentElement.classList.toggle("dark", e.target.checked);
-                    }}
-                  />
-                  <label htmlFor="dark-mode-toggle" className="toggle"></label>
+
+
+                  <div className="dark-mode-div">
+                    <input
+                      type="checkbox"
+                      id="dark-mode-toggle"
+                      defaultChecked={localStorage.getItem("dark") === "true"}
+                      onChange={(e) => {
+                        localStorage.setItem("dark", String(e.target.checked));
+                        document.documentElement.classList.toggle("dark", e.target.checked);
+                      }}>
+                        
+                    </input>
+                    <label htmlFor="dark-mode-toggle" className="toggle"> </label>
+                    <p className="menu-item nav-link">Thème</p>
+
+                  </div>
+
+
                 </div>
               )}
               </div>
