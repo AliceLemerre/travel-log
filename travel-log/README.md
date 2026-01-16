@@ -2,7 +2,7 @@
 Travel log
 
 ## Description
-Notre application est un carnet de voyage .......
+Application de carnet de voyage pour enregistrer toutes ses étapes de vacances, avec dates, notes et photos inclus.
 
 ## Fonctionnalités
 - [ ] Authentification
