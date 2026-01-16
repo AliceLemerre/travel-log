@@ -16,7 +16,7 @@ Application de carnet de voyage pour enregistrer toutes ses étapes de vacances,
 - React 18
 - Vite
 - Supabase
-- [Autres librairies]
+- CSS natif
 
 ## Installation
 git clone https://github.com/AliceLemerre/travel-log.git
@@ -29,10 +29,6 @@ npm install
 
 ### Lancement en local
 npm run dev
-
-## Structure du projet
-[Arborescence expliquée]
-tree /F /A | clip      à faire
 
 ## Auteur(s)
 Alice Lemerre
